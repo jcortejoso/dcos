@@ -1,0 +1,13 @@
+[Unit]
+Description=OAuth: OAuth Authentication Service
+
+[Service]
+Restart=always
+StartLimitInterval=0
+RestartSec=5
+EnvironmentFile=/etc/environment
+EnvironmentFile=/opt/mesosphere/environment
+EnvironmentFile=/opt/mesosphere/etc/consul
+ExecStartPre=/usr/bin/mkdir -p /var/lib/dcos/consul
+ExecStartPre=/bin/echo ${CONSUL_BIND_IP}
+ExecStart=/opt/mesosphere/bin/consul agent -server -bootstrap -data-dir=/var/lib/dcos/consul -bind=${CONSUL_BIND_IP}
