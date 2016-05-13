@@ -1,0 +1,7 @@
+{
+  "single_source": {
+    "kind": "url_extract",
+    "url": "https://s3-eu-west-1.amazonaws.com/dcos-packages/consul.tar.gz",
+    "sha1": "65e2aab1335b8d73cb49b016c44d5a72104c17ce"
+  }
+}

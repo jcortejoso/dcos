@@ -1,0 +1,39 @@
+#!/bin/bash -xe
+
+mkdir -p ${PKG_PATH}/bin
+
+cp -v /pkg/src/consul/consul ${PKG_PATH}/bin
+cp -v -p /pkg/extra/start_consul.py ${PKG_PATH}/bin
+chmod +r ${PKG_PATH}/bin/start_consul.py
+cp -v -r /pkg/extra/ui ${PKG_PATH}
+
+# Create the service file
+#systemd_master="${PKG_PATH}/dcos.target.wants_master/consul.service"
+#mkdir -p "$(dirname "$systemd_master")"
+#cp /pkg/extra/consul-master.service "$systemd_master"
+#
+#systemd_slave="${PKG_PATH}/dcos.target.wants_slave/consul.service"
+#mkdir -p "$(dirname "$systemd_slave")"
+#cp /pkg/extra/consul-agent.service "$systemd_slave"
+#
+#systemd_slave_public="${PKG_PATH}/dcos.target.wants_slave_public/consul.service"
+#mkdir -p "$(dirname "$systemd_slave_public")"
+#cp /pkg/extra/consul-agent-public.service "$systemd_slave_public"
+
+service=${PKG_PATH}/dcos.target.wants/consul.service
+mkdir -p $(dirname $service)
+cat <<EOF > $service
+[Unit]
+Description=Consul Service Discovery
+
+[Service]
+Restart=always
+StartLimitInterval=0
+RestartSec=5
+EnvironmentFile=/etc/environment
+EnvironmentFile=/opt/mesosphere/environment
+EnvironmentFile=/opt/mesosphere/etc/consul.env
+ExecStartPre=/usr/bin/mkdir -p /var/lib/dcos/consul
+ExecStart=${PKG_PATH}/bin/start_consul.py
+
+EOF

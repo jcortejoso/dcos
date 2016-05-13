@@ -128,6 +128,9 @@ package:
       OAUTH_ISSUER_URL={{ oauth_issuer_url }}
       OAUTH_CLIENT_ID={{ oauth_client_id }}
       OAUTH_AUTH_REDIRECTOR={{ oauth_auth_redirector }}
+  - path: /etc/consul.env
+    content: |
+      CONSUL_BIND_IP=$(/opt/mesosphere/bin/detect_ip)
 {% switch master_discovery %}
 {% case "master_http_loadbalancer" %}
   - path: /etc/dns_config
