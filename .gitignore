@@ -7,6 +7,7 @@ dcos-config--setup*.tar.xz
 tmp/
 runner.env
 artifacts/
+dcos-artifacts/
 dcos_install.sh
 onprem.tar.xz
 *~
@@ -17,10 +18,14 @@ docker-tag
 dcos_generate_config.sh
 .*.swp
 *.egg-info
+*.tar.xz
+packages/*.active.json
+packages/*bootstrap.latest
+.python-version
 wheelhouse/
 ./dcos-release.config.yaml
 
-# Integration tests related:
+## Integration tests related:
 test/build/*
 PASSED
 FAILED
