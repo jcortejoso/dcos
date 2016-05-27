@@ -41,6 +41,7 @@ consul_cmdline = [
     'consul',
     'agent',
     '-bind', detected_ip,
+    '-client', detected_ip,
     '-data-dir', '/var/lib/dcos/consul',
 ]
 
@@ -51,7 +52,7 @@ check_call(['mkdir', '-p', '/var/lib/dcos/consul'])
 check_call(['mkdir', '-p', '/run/consul'])
 
 masters = open('/opt/mesosphere/etc/master_list').read().strip()
-masters_ary = masters[1:-1].replace('"', "").strip().split(',')
+masters_ary = masters[1:-1].replace('"', "").replace(' ', "").split(',')
 
 iam_server = False
 
@@ -105,3 +106,4 @@ else:
 print("Running consul as command:", consul_cmdline)
 sys.stdout.flush()
 os.execv('/opt/mesosphere/bin/consul', consul_cmdline)
+
