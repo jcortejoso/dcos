@@ -267,7 +267,7 @@ def get_gen_package_artifact(package_id_str):
         'local_path': package_filename}
 
 
-def make_stable_artifacts(cache_repository_url):
+def make_stable_artifacts(storage_providers, cache_repository_url):
     metadata = {
         "commit": util.dcos_image_commit,
         "core_artifacts": [],
@@ -277,7 +277,7 @@ def make_stable_artifacts(cache_repository_url):
     # TODO(cmaloney): Rather than guessing / reverse-engineering all these paths
     # have do_build_packages get them directly from pkgpanda
     try:
-        all_completes = do_build_packages(cache_repository_url)
+        all_completes = do_build_packages(storage_providers, cache_repository_url)
     except pkgpanda.build.BuildError as ex:
         print("ERROR Building packages:", ex, file=sys.stderr)
         raise
@@ -409,7 +409,7 @@ def make_abs(path):
     return os.getcwd() + '/' + path
 
 
-def do_build_docker(name):
+def do_build_docker(storage_providers,name):
     dockerfile = pkg_resources.resource_filename('pkgpanda', 'docker/{}/Dockerfile'.format(name))
     container_name = 'dcos/{}:dockerfile-{}'.format(name, pkgpanda.util.sha1(dockerfile))
     print("Attempting to pull docker:", container_name)
@@ -461,7 +461,7 @@ def do_build_packages(cache_repository_url):
 
     def get_build():
         # TODO(cmaloney): Stop shelling out
-        package_store = pkgpanda.build.PackageStore(os.getcwd() + '/packages', cache_repository_url)
+        package_store = pkgpanda.build.PackageStore(os.getcwd() + '/packages', storage_providers, cache_repository_url)
         result = pkgpanda.build.build_tree(package_store, True, None)
         last_set = package_store.get_last_complete_set()
         assert last_set == result, \
@@ -645,7 +645,7 @@ class ReleaseManager():
 
         # TOOD(cmaloney): Figure out why the cached version hasn't been working right
         # here from the TeamCity agents. For now hardcoding the non-cached s3 download locatoin.
-        metadata = make_stable_artifacts(self.__config['options']['cloudformation_s3_url'] + '/' + repository_path)
+        metadata = make_stable_artifacts(self.__storage_providers, repository_path)
 
         # Metadata should already have things like bootstrap_id in it.
         assert 'bootstrap_dict' in metadata

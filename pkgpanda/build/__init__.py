@@ -214,8 +214,9 @@ class PackageSet:
 
 class PackageStore:
 
-    def __init__(self, packages_dir, repository_url):
-        self._repository_url = repository_url.rstrip('/') if repository_url is not None else None
+    def __init__(self, packages_dir, storage_providers, repository_path):
+        self._storage_providers = storage_providers
+        self._repository_path = repository_path
         self._packages_dir = packages_dir.rstrip('/')
 
         # Load all possible packages, making a dictionary from (name, variant) -> buildinfo
@@ -338,41 +339,45 @@ class PackageStore:
 
     def try_fetch_by_id(self, pkg_id):
         assert isinstance(pkg_id, PackageId)
-        if self._repository_url is None:
+        if self._storage_providers is None:
             return False
 
         # TODO(cmaloney): Use storage providers to download instead of open coding.
-        pkg_path = "{}.tar.xz".format(pkg_id)
-        url = self._repository_url + '/packages/{0}/{1}'.format(pkg_id.name, pkg_path)
-        try:
-            directory = self.get_package_cache_folder(pkg_id.name)
-            # TODO(cmaloney): Move to some sort of logging mechanism?
-            print("Attempting to download", pkg_id, "from", url, "to", directory)
-            download_atomic(directory + '/' + pkg_path, url, directory)
-            assert os.path.exists(directory + '/' + pkg_path)
-            return directory + '/' + pkg_path
-        except FetchError:
-            return False
+        pkg_name = "{}.tar.xz".format(pkg_id)
+        pkg_path = self._repository_path + '/packages/{0}/{1}'.format(pkg_id.name, pkg_name)
+        directory = self.get_package_cache_folder(pkg_id.name)
+
+        for provider_name, provider in self._storage_providers.items():
+            try:
+                # TODO(cmaloney): Move to some sort of logging mechanism?
+                print("Attempting to download", pkg_id, "from", provider_name, "to", directory)
+                provider.download(pkg_path, directory + '/' + pkg_name)
+                assert os.path.exists(directory + '/' + pkg_name)
+                return directory + '/' + pkg_name
+            except FetchError:
+                return False
 
     def try_fetch_bootstrap_and_active(self, bootstrap_id):
-        if self._repository_url is None:
+        if self._storage_providers is None:
             return False
 
-        try:
-            bootstrap_name = '{}.bootstrap.tar.xz'.format(bootstrap_id)
-            active_name = '{}.active.json'.format(bootstrap_id)
-            # TODO(cmaloney): Use storage providers to download instead of open coding.
-            bootstrap_url = self._repository_url + '/bootstrap/' + bootstrap_name
-            active_url = self._repository_url + '/bootstrap/' + active_name
-            print("Attempting to download", bootstrap_name, "from", bootstrap_url)
-            dest_dir = self.get_bootstrap_cache_dir()
-            # Normalize to no trailing slash for repository_url
-            download_atomic(dest_dir + '/' + bootstrap_name, bootstrap_url, self._packages_dir)
-            print("Attempting to download", active_name, "from", active_url)
-            download_atomic(dest_dir + '/' + active_name, active_url, self._packages_dir)
-            return True
-        except FetchError:
-            return False
+        bootstrap_name = '{}.bootstrap.tar.xz'.format(bootstrap_id)
+        active_name = '{}.active.json'.format(bootstrap_id)
+        # TODO(cmaloney): Use storage providers to download instead of open coding.
+        bootstrap_path = self._repository_path + '/bootstrap/' + bootstrap_name
+        active_path = self._repository_path + '/bootstrap/' + active_name
+
+        for provider_name, provider in self._storage_providers.items():
+            try:
+                print("Attempting to download", bootstrap_name, "from", provider_name)
+                dest_dir = self.get_bootstrap_cache_dir()
+                # Normalize to no trailing slash for repository_url
+                provider.download(bootstrap_path, dest_dir + '/' + bootstrap_name)
+                print("Attempting to download", active_name, "from", provider_name)
+                provider.download(active_path, dest_dir + '/' + active_name)
+                return True
+            except FetchError:
+                return False
 
 
 def expand_require(require):

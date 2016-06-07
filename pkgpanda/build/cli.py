@@ -27,7 +27,7 @@ def main():
 
         # Make a local repository for build dependencies
         if arguments['tree']:
-            package_store = PackageStore(getcwd(), arguments['--repository-url'])
+            package_store = PackageStore(getcwd(), None, arguments['--repository-url'])
             build_tree(package_store, arguments['--mkbootstrap'], arguments['<variant>'])
             sys.exit(0)
 
@@ -35,7 +35,7 @@ def main():
         name = basename(getcwd())
 
         # Package store is always the parent directory
-        package_store = PackageStore(normpath(getcwd() + '/../'), arguments['--repository-url'])
+        package_store = PackageStore(normpath(getcwd() + '/../'), None, arguments['--repository-url'])
 
         # Check that the folder is a package folder (the name was found by the package store as a
         # valid package with 1+ variants).

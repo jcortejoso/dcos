@@ -3,6 +3,7 @@ import os
 import requests
 
 from release.storage import AbstractStorageProvider
+from pkgpanda.exceptions import FetchError
 
 
 class HttpStorageProvider(AbstractStorageProvider):
@@ -18,7 +19,10 @@ class HttpStorageProvider(AbstractStorageProvider):
     def copy(self,
              source_path,
              destination_path):
-        raise NotImplementedError()
+        tmp_path = os.path.join(os.getcwd(), source_path + '.tmp')
+        self.download(source_path, tmp_path)
+        self.upload(destination_path, local_path=tmp_path)
+        os.remove(tmp_path)
 
     def upload(self,
                destination_path,
@@ -26,7 +30,14 @@ class HttpStorageProvider(AbstractStorageProvider):
                local_path=None,
                no_cache=None,
                content_type=None):
-        raise NotImplementedError()
+        assert local_path is None or blob is None
+        if local_path:
+            with open(local_path, 'rb') as data:
+                requests.put(self._get_absolute(destination_path), data=data, auth=(self.__user, self.__pass))
+        else:
+            assert blob is not None
+            assert isinstance(blob, bytes)
+            requests.put(self._get_absolute(destination_path), data=blob, auth=(self.__user, self.__pass))
 
     def download_inner(self, path, local_path):
         local_path_tmp = '{}.tmp'.format(local_path)
@@ -38,13 +49,15 @@ class HttpStorageProvider(AbstractStorageProvider):
                 for chunk in r.iter_content(chunk_size=4096):
                     f.write(chunk)
                 os.rename(local_path_tmp, local_path)
-        except:
+        except Exception as fetch_exception:
+            rm_passed = False
             # Delete the temp file, re-raise.
             try:
                 os.remove(local_path_tmp)
+                rm_passed = True
             except Exception:
                 pass
-        self.get_object(path).download_file(local_path)
+            raise FetchError(url, local_path, fetch_exception, rm_passed) from fetch_exception
 
     def exists(self, path):
         url = self._get_absolute(path)
