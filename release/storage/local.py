@@ -2,6 +2,7 @@ import os.path
 import subprocess
 
 from release.storage import AbstractStorageProvider
+from pkgpanda.exceptions import FetchError
 
 
 # Local storage provider useful for testing. Not used for the local artifacts
@@ -24,7 +25,10 @@ class LocalStorageProvider(AbstractStorageProvider):
             return f.read()
 
     def download_inner(self, path, local_path):
-        subprocess.check_call(['cp', self.__full_path(path), local_path])
+        try:
+            subprocess.check_call(['cp', self.__full_path(path), local_path])
+        except Exception as fetch_exception:
+            raise FetchError(path, local_path, fetch_exception, True) from fetch_exception
 
     # Copy between fully qualified paths
     def __copy(self, full_source_path, full_destination_path):
