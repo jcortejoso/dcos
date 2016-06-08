@@ -13,3 +13,5 @@ package:
 deploy:
 	bin/deploy.sh
 
+code-quality:
+	bin/code-quality.sh

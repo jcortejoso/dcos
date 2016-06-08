@@ -355,7 +355,8 @@ class PackageStore:
                 assert os.path.exists(directory + '/' + pkg_name)
                 return directory + '/' + pkg_name
             except FetchError:
-                return False
+                continue
+        return False
 
     def try_fetch_bootstrap_and_active(self, bootstrap_id):
         if self._storage_providers is None:
@@ -377,7 +378,8 @@ class PackageStore:
                 provider.download(active_path, dest_dir + '/' + active_name)
                 return True
             except FetchError:
-                return False
+                continue
+        return False
 
 
 def expand_require(require):
