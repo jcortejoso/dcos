@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 filename=dcos_generate_config.sh
 file=/root/cd/dcos-artifacts/testing/first/${filename}
@@ -7,8 +7,8 @@ resource="/${bucket}/${filename}"
 contentType="application/x-sh"
 dateValue=`date -R`
 stringToSign="PUT\n\n${contentType}\n${dateValue}\n${resource}"
-s3Key=${PAAS_BUCKET_ACCESS}
-s3Secret=${PAAS_BUCKET_KEY}
+s3Key=${AWS_ACCESS}
+s3Secret=${AWS_KEY}
 signature=`echo -en ${stringToSign} | openssl sha1 -hmac ${s3Secret} -binary | base64`
 curl -X PUT -T "${file}" \
   -H "Date: ${dateValue}" \
