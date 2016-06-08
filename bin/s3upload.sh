@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 filename=dcos_generate_config.sh
 file=/root/cd/dcos-artifacts/testing/first/${filename}
