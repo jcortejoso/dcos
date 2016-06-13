@@ -1,7 +1,8 @@
 #!/bin/bash
 
-filename=dcos_generate_config.sh
-file=/root/cd/dcos-artifacts/testing/first/${filename}
+local_filename=dcos_generate_config.sh
+filename=stratio-dcos-${MODULE_VERSION}.sh
+file=/root/cd/dcos-artifacts/testing/first/${local_filename}
 bucket=dcos-packages
 resource="/${bucket}/${filename}"
 contentType="application/x-sh"
