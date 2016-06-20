@@ -1,0 +1,17 @@
+[Unit]
+Description=Apache Kafka server (broker)
+Documentation=http://kafka.apache.org/documentation.html
+Requires=network.target remote-fs.target syslog.target
+After=network.target remote-fs.target syslog.target
+
+[Service]
+Type=simple
+Restart=always
+StartLimitInterval=0
+RestartSec=5
+KillMode=control-group
+Delegate=true
+SyslogIdentifier=kafka
+LimitNOFILE=infinity
+ExecStart=${PKG_PATH}/kafka/bin/kafka-server-start.sh
+ExecStop=${PKG_PATH}/kafka/bin/kafka-server-stop.sh

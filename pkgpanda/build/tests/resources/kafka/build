@@ -1,0 +1,10 @@
+#!/bin/bash
+
+pushd "/pkg/"
+
+sudo chmod -R o+w+r $PKG_PATH
+
+cp -r "/pkg/src/kafka" "$PKG_PATH/"
+chmod -R +x "$PKG_PATH/kafka/bin/"
+
+popd

@@ -1,0 +1,7 @@
+{
+  "single_source" : {
+    "kind": "url_extract",
+    "url": "http://apache.rediris.es/kafka/0.10.0.0/kafka-0.10.0.0-src.tgz",
+    "sha1": "2ba1e7dcd245f0c2119a4510bd54a7ebbe5dafe4"
+  }
+}

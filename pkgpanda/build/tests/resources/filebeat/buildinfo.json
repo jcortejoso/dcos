@@ -1,0 +1,8 @@
+{
+  "docker": "ubuntu:14.04.4",
+  "single_source" : {
+    "kind": "url_extract",
+    "url": "https://download.elastic.co/beats/filebeat/filebeat-5.0.0-alpha2-x86_64.tar.gz",
+    "sha1": "902c426168096560edb9ad9792ebdcce33c7aa38"
+  }
+}

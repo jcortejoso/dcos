@@ -37,6 +37,22 @@ def test_build_bad_sha1(tmpdir):
     package("resources/base", "base", tmpdir)
 
 
+def test_build_filebeat(tmpdir):
+    package("resources/filebeat", "filebeat", tmpdir)
+
+
+def test_build_telegraf_forwarder(tmpdir):
+    package("resources/telegraf-forwarder", "telegraf-forwarder", tmpdir)
+
+
+def test_build_telegraf_collector(tmpdir):
+    package("resources/telegraf-collector", "telegraf-collector", tmpdir)
+
+
+def test_build_kafka(tmpdir):
+    package("resources/kafka", "kafka", tmpdir)
+
+
 def test_url_extract_tar(tmpdir):
     package("resources/url_extract-tar", "url_extract-tar", tmpdir)
 
@@ -179,5 +195,5 @@ def test_bootstrap(tmpdir):
                 'pkginfo.json',
                 'lib/',
                 'lib/libmesos.so',
-                ])
-            }
+            ])
+        }

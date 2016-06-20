@@ -1,0 +1,17 @@
+[Unit]
+Description=Apache Kafka server (broker)
+
+[Service]
+Type=simple
+Restart=always
+StartLimitInterval=0
+RestartSec=5
+KillMode=control-group
+Delegate=true
+SyslogIdentifier=kafka
+LimitNOFILE=infinity
+Environment=PATH=/opt/mesosphere/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+Environment=JAVA_HOME=/opt/mesosphere/active/java/usr/java
+ExecStartPre=${PKG_PATH}/kafka/set-broker-id.sh
+ExecStart=${PKG_PATH}/kafka/bin/kafka-server-start.sh ${PKG_PATH}/kafka/config/server.properties
+ExecStop=${PKG_PATH}/kafka/bin/kafka-server-stop.sh

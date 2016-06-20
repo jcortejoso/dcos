@@ -1,0 +1,8 @@
+{
+  "requires": ["kafka"],
+  "single_source" : {
+    "kind": "url_extract",
+    "url": "https://dl.influxdata.com/telegraf/releases/telegraf-0.13.1_linux_amd64.tar.gz",
+    "sha1": "586dfd850e209435a42cf07824dd0b2c81a42057"
+  }
+}
