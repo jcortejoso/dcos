@@ -1,0 +1,30 @@
+filebeat:
+  prospectors:
+    - document_type: syslog
+      paths:
+        - /var/log/messages
+output:
+  kafka:
+    hosts: "leader.mesos:9092"
+    topic: "logforwarder"
+    client_id: "stratiopaascluster"
+
+shipper:
+
+logging:
+
+  level: debug
+
+  # enable file rotation with default configuration
+  to_files: true
+
+  # do not log to syslog
+  to_syslog: false
+
+  files:
+    path: /var/log/filebeat
+    name: filebeat.log
+    keepfiles: 7
+    rotateeverybytes: 10485760 # = 10MB
+
+

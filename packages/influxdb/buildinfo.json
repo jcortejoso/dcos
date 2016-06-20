@@ -1,0 +1,7 @@
+{
+  "single_source" : {
+    "kind": "url_extract",
+    "url": "https://dl.influxdata.com/influxdb/releases/influxdb-0.13.0_linux_amd64.tar.gz",
+    "sha1": "f11b48acd3e535b99d8dbc05e7e5fcd1fbb14614"
+  }
+}

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+pushd "/pkg/"
+
+sudo chmod -R o+w+r $PKG_PATH
+
+cp -R "src/elasticsearch/bin" "$PKG_PATH/"
+chmod -R +x "$PKG_PATH/bin"
+mkdir -p "$PKG_PATH/eslib"
+cp -R src/elasticsearch/lib/* "$PKG_PATH/eslib"
+cp -R src/elasticsearch/config "$PKG_PATH/"
+
+
+popd
+# systemd
+
+export PKG_PATH=$PKG_PATH
+systemd_master="$PKG_PATH"/dcos.target.wants_master/elasticsearch.service
+mkdir -p "$(dirname "$systemd_master")"
+envsubst '$PKG_PATH' < /pkg/extra/elasticsearch.service > "$systemd_master"

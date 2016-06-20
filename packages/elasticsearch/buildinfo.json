@@ -1,0 +1,9 @@
+{
+  "single_source" : {
+    "kind": "url_extract",
+    "url": "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.5.tar.gz",
+    "sha1": "23353fcfdf4897997eb36624afa0af62562f9b3c"
+  }
+}
+
+

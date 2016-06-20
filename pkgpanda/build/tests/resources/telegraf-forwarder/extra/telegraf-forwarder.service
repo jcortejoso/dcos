@@ -1,0 +1,11 @@
+[Unit]
+Description=Telegraf metrics forwarder
+
+[Service]
+Restart=always
+StartLimitInterval=0
+RestartSec=5
+KillMode=control-group
+Delegate=true
+LimitNOFILE=infinity
+ExecStart=${PKG_PATH}/bin/telegraf -config ${PKG_PATH}/etc/telegraf-forwarder.conf

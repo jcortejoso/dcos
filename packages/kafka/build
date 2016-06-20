@@ -1,0 +1,18 @@
+#!/bin/bash
+
+pushd "/pkg/"
+
+sudo chmod -R o+w+r $PKG_PATH
+
+cp -r "src/kafka" "$PKG_PATH/"
+chmod -R +x "$PKG_PATH/kafka/bin/"
+
+popd
+
+# systemd
+export PKG_PATH=$PKG_PATH
+systemd_master="$PKG_PATH"/dcos.target.wants_master/kafka.service
+mkdir -p "$(dirname "$systemd_master")"
+envsubst '$PKG_PATH' < /pkg/extra/kafka.service > "$systemd_master"
+envsubst '$PKG_PATH' < /pkg/extra/set-broker-id.sh > "$PKG_PATH/kafka/set-broker-id.sh"
+chmod +x $PKG_PATH/kafka/set-broker-id.sh

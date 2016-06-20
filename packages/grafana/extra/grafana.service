@@ -1,0 +1,11 @@
+[Unit]
+Description=Grafana 
+
+[Service]
+Restart=always
+StartLimitInterval=0
+RestartSec=5
+KillMode=control-group
+Delegate=true
+LimitNOFILE=infinity
+ExecStart=${PKG_PATH}/bin/grafana-server --homepath ${PKG_PATH}/
