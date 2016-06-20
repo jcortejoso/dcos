@@ -1,0 +1,116 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            ca:f4:4b:62:74:14:f9:89:51:0d:c5:6c:f1:1b:81:10
+    Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C=ES, O=Stratio, CN=GoSEC team CA
+        Validity
+            Not Before: Feb 29 17:04:29 2016 GMT
+            Not After : Feb 28 17:04:29 2017 GMT
+        Subject: C=ES, O=Stratio, CN=gosec04.dev.stratio.com
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:c9:9a:72:48:50:52:59:89:38:d2:aa:ae:47:4f:
+                    d0:f6:ee:2e:cc:d0:a4:1f:85:77:d5:66:bf:62:6e:
+                    5e:f2:69:e1:82:b4:4f:9d:25:d3:e9:7a:0c:65:e5:
+                    7b:68:75:e8:b1:0d:b0:e5:11:18:05:c3:4b:a1:e4:
+                    f8:63:32:6d:41:6a:67:b4:81:65:27:66:92:c3:a9:
+                    67:38:9b:1a:54:32:e3:74:f6:1b:4a:1a:4b:cc:1d:
+                    4d:94:b5:9f:aa:f8:36:36:63:62:6a:fe:41:9d:0c:
+                    e6:00:ec:cf:9b:65:94:76:b3:49:42:c3:1c:4b:da:
+                    9c:d0:e6:94:19:68:51:46:7e:68:f7:7e:4a:62:84:
+                    28:04:e0:bc:cd:fc:8d:9a:77:36:47:a4:83:38:0b:
+                    1b:5d:f6:80:4d:1a:a1:7d:e8:51:a7:d4:24:e9:b1:
+                    82:fb:5d:01:9e:f5:d0:c7:a9:38:96:1a:f9:28:24:
+                    ef:35:17:cc:f1:90:75:82:18:84:8d:00:f6:2a:ed:
+                    d4:6b:9c:67:a2:fb:48:64:b6:09:37:32:5c:dd:7e:
+                    83:36:53:57:ab:b1:13:f6:e6:6d:76:21:56:dd:1b:
+                    34:56:1f:56:51:f3:32:78:37:86:9d:33:dd:d9:cb:
+                    0d:17:4e:b9:17:b7:ba:50:07:9b:83:f3:b5:e9:e7:
+                    a0:3f
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            Authority Information Access: 
+                CA Issuers - URI:http://gosec-ca.dev.stratio.com/gosec-ca.crt
+                OCSP - URI:http://ocsp.gosec-ca.dev.stratio.com:9081
+
+            X509v3 Authority Key Identifier: 
+                keyid:2B:52:30:CD:CB:D8:E0:8A:F4:57:A1:2E:2F:04:7B:BF:C4:89:C4:07
+
+            X509v3 Basic Constraints: critical
+                CA:FALSE
+            X509v3 CRL Distribution Points: 
+
+                Full Name:
+                  URI:http://gosec-ca.dev.stratio.com/gosec-ca.crl
+
+            X509v3 Extended Key Usage: 
+                TLS Web Client Authentication, TLS Web Server Authentication
+            X509v3 Key Usage: critical
+                Digital Signature, Key Encipherment
+            X509v3 Subject Key Identifier: 
+                2D:92:B8:64:A7:4E:3E:B0:45:C5:7A:5F:57:D0:A0:7A:78:93:18:B0
+    Signature Algorithm: sha256WithRSAEncryption
+         59:93:e7:4f:68:ae:d7:64:a0:62:e9:f1:74:3d:3e:fc:64:e3:
+         49:35:e5:a5:bc:a1:67:20:09:f7:6a:19:2f:8b:3c:f3:27:fe:
+         d7:09:e4:9e:20:1e:aa:e9:a6:1a:14:c8:70:17:0b:73:2a:ce:
+         5c:17:6b:f0:66:90:a2:ad:10:7e:c4:07:2b:86:e4:9b:95:2a:
+         4c:d8:57:2a:f1:bd:25:5d:71:e5:d3:df:79:47:f9:15:86:83:
+         05:73:d1:12:10:37:cd:16:d8:e9:76:2d:20:08:08:05:64:85:
+         5a:bc:cd:e5:79:00:36:5c:e5:82:f4:73:76:a0:5b:6a:38:5a:
+         30:cc:25:1a:d1:33:44:3d:47:8e:c6:d9:3e:33:e4:51:dd:a6:
+         ca:d1:d1:9b:b3:7d:eb:62:ba:cc:a8:59:ce:ae:42:a6:c6:fa:
+         c8:81:2b:34:c7:cb:8f:99:aa:bf:10:fd:ed:96:0b:93:4d:3f:
+         96:2e:f5:37:e6:e4:37:6c:26:4f:50:de:0a:ad:d0:b9:ef:92:
+         b0:0b:2e:df:9a:88:df:e7:a9:a7:58:46:b0:ce:e0:e6:d5:2d:
+         a9:a2:08:56:d1:52:1d:2c:26:35:8f:39:cd:05:69:85:35:95:
+         8f:62:9b:b9:f2:d6:f6:9f:15:19:55:3f:7a:e6:72:02:49:41:
+         4a:0b:ac:98:b6:c3:27:3a:26:5d:64:a6:44:08:63:6f:ee:a0:
+         ae:9d:80:f6:bc:0c:4b:d7:65:af:0f:3b:b2:71:e9:ef:aa:ed:
+         9f:10:d8:2c:69:0c:e5:47:59:7e:c5:8b:de:cb:7d:a9:47:16:
+         06:67:be:bd:15:46:6d:2c:eb:f7:41:9a:be:0e:c6:a4:34:06:
+         5f:4e:98:02:43:11:29:9b:1d:6c:4d:a9:55:91:89:93:00:3c:
+         43:ac:33:01:3c:86:bf:e3:1d:40:6f:38:b2:67:bc:66:41:43:
+         26:49:e2:2b:39:2d:ec:b3:4f:99:3f:84:f9:ab:05:1c:41:6b:
+         70:fa:f8:8e:19:98:5d:e6:ff:02:24:6a:dd:2a:81:95:56:85:
+         d1:f3:be:15:a2:d2:80:b2:d2:97:b6:68:18:01:d6:d8:78:22:
+         a2:cd:af:d8:0f:77:02:7d:9c:14:b5:da:63:cf:b3:cc:f1:df:
+         ee:14:7e:ba:f1:74:c9:fd:68:6b:b1:53:37:da:c3:99:27:9d:
+         79:cb:49:51:1d:d2:b7:89:6b:2e:7b:b2:5c:5f:60:3b:f8:21:
+         ab:b7:5c:4b:b8:d2:c9:73:f4:da:a9:60:99:53:35:1d:64:36:
+         db:79:b4:07:37:57:3c:12:b8:45:88:05:a6:ac:98:1b:57:80:
+         5d:5d:13:ac:85:02:37:80
+-----BEGIN CERTIFICATE-----
+MIIFRjCCAy6gAwIBAgIRAMr0S2J0FPmJUQ3FbPEbgRAwDQYJKoZIhvcNAQELBQAw
+NzELMAkGA1UEBhMCRVMxEDAOBgNVBAoMB1N0cmF0aW8xFjAUBgNVBAMMDUdvU0VD
+IHRlYW0gQ0EwHhcNMTYwMjI5MTcwNDI5WhcNMTcwMjI4MTcwNDI5WjBBMQswCQYD
+VQQGEwJFUzEQMA4GA1UECgwHU3RyYXRpbzEgMB4GA1UEAwwXZ29zZWMwNC5kZXYu
+c3RyYXRpby5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDJmnJI
+UFJZiTjSqq5HT9D27i7M0KQfhXfVZr9ibl7yaeGCtE+dJdPpegxl5XtodeixDbDl
+ERgFw0uh5PhjMm1Bame0gWUnZpLDqWc4mxpUMuN09htKGkvMHU2UtZ+q+DY2Y2Jq
+/kGdDOYA7M+bZZR2s0lCwxxL2pzQ5pQZaFFGfmj3fkpihCgE4LzN/I2adzZHpIM4
+Cxtd9oBNGqF96FGn1CTpsYL7XQGe9dDHqTiWGvkoJO81F8zxkHWCGISNAPYq7dRr
+nGei+0hktgk3MlzdfoM2U1ersRP25m12IVbdGzRWH1ZR8zJ4N4adM93Zyw0XTrkX
+t7pQB5uD87Xp56A/AgMBAAGjggFBMIIBPTB/BggrBgEFBQcBAQRzMHEwOAYIKwYB
+BQUHMAKGLGh0dHA6Ly9nb3NlYy1jYS5kZXYuc3RyYXRpby5jb20vZ29zZWMtY2Eu
+Y3J0MDUGCCsGAQUFBzABhilodHRwOi8vb2NzcC5nb3NlYy1jYS5kZXYuc3RyYXRp
+by5jb206OTA4MTAfBgNVHSMEGDAWgBQrUjDNy9jgivRXoS4vBHu/xInEBzAMBgNV
+HRMBAf8EAjAAMD0GA1UdHwQ2MDQwMqAwoC6GLGh0dHA6Ly9nb3NlYy1jYS5kZXYu
+c3RyYXRpby5jb20vZ29zZWMtY2EuY3JsMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggr
+BgEFBQcDATAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0OBBYEFC2SuGSnTj6wRcV6X1fQ
+oHp4kxiwMA0GCSqGSIb3DQEBCwUAA4ICAQBZk+dPaK7XZKBi6fF0PT78ZONJNeWl
+vKFnIAn3ahkvizzzJ/7XCeSeIB6q6aYaFMhwFwtzKs5cF2vwZpCirRB+xAcrhuSb
+lSpM2Fcq8b0lXXHl0995R/kVhoMFc9ESEDfNFtjpdi0gCAgFZIVavM3leQA2XOWC
+9HN2oFtqOFowzCUa0TNEPUeOxtk+M+RR3abK0dGbs33rYrrMqFnOrkKmxvrIgSs0
+x8uPmaq/EP3tlguTTT+WLvU35uQ3bCZPUN4KrdC575KwCy7fmojf56mnWEawzuDm
+1S2poghW0VIdLCY1jznNBWmFNZWPYpu58tb2nxUZVT965nICSUFKC6yYtsMnOiZd
+ZKZECGNv7qCunYD2vAxL12WvDzuycenvqu2fENgsaQzlR1l+xYvey32pRxYGZ769
+FUZtLOv3QZq+DsakNAZfTpgCQxEpmx1sTalVkYmTADxDrDMBPIa/4x1AbziyZ7xm
+QUMmSeIrOS3ss0+ZP4T5qwUcQWtw+viOGZhd5v8CJGrdKoGVVoXR874VotKAstKX
+tmgYAdbYeCKiza/YD3cCfZwUtdpjz7PM8d/uFH668XTJ/WhrsVM32sOZJ515y0lR
+HdK3iWsue7JcX2A7+CGrt1xLuNLJc/TaqWCZUzUdZDbbebQHN1c8ErhFiAWmrJgb
+V4BdXROshQI3gA==
+-----END CERTIFICATE-----

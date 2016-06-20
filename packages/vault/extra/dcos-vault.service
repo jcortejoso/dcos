@@ -1,0 +1,15 @@
+[Unit]
+Description=Vault: DC/OS Vault Service
+[Service]
+Restart=always
+StartLimitInterval=0
+RestartSec=15
+LimitNOFILE=infinity
+EnvironmentFile=/etc/environment
+EnvironmentFile=/opt/mesosphere/environment
+ExecStartPre=/opt/mesosphere/bin/python /opt/mesosphere/bin/set_vault.py
+ExecStartPre=/bin/ping -c1 ready.spartan
+ExecStartPre=/opt/mesosphere/bin/exhibitor_wait.py
+ExecStart=/opt/mesosphere/bin/vault server -config /opt/mesosphere/etc/vault.hcl
+ExecStartPost=/opt/mesosphere/bin/python /opt/mesosphere/bin/init_vault.py
+ExecStartPost=/opt/mesosphere/bin/python /opt/mesosphere/bin/unseal_vault.py
