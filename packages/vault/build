@@ -8,10 +8,10 @@ cp -v -p /pkg/extra/set_vault.py ${PKG_PATH}/bin
 cp -v -p /pkg/extra/init_vault.py ${PKG_PATH}/bin
 cp -v -p /pkg/extra/unseal_vault.py ${PKG_PATH}/bin
 
-mkdir -p ${PKG_PATH}/etc/sds/secrets
-cp -v -p /pkg/extra/gosec04.crt ${PKG_PATH}/etc/sds/secrets
-cp -v -p /pkg/extra/gosec04.key ${PKG_PATH}/etc/sds/secrets
-cp -v -p /pkg/extra/ca-bundle.crt ${PKG_PATH}/etc/sds/secrets
+mkdir -p ${PKG_PATH}/etc/stratio/secrets
+cp -v -p /pkg/extra/gosec04.crt ${PKG_PATH}/etc/stratio/secrets
+cp -v -p /pkg/extra/gosec04.key ${PKG_PATH}/etc/stratio/secrets
+cp -v -p /pkg/extra/ca-bundle.crt ${PKG_PATH}/etc/stratio/secrets
 
 export PKG_PATH=$PKG_PATH
 systemd_master="$PKG_PATH"/dcos.target.wants_master/dcos-vault.service
