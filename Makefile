@@ -1,5 +1,8 @@
 all: test integration-test package
 
+change-version:
+	bin/change-version.sh $(version)
+
 test:
 	tox -e py34-unittests
 	tox -e py34-pkgpanda
