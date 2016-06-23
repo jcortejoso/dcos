@@ -1,7 +1,7 @@
 import requests
 
 try:
-    with open('/opt/mesosphere/etc/sds/secrets/keys.txt') as f:
+    with open('/opt/mesosphere/etc/stratio/secrets/keys.txt') as f:
         lines = f.readlines()
         masters = open('/opt/mesosphere/etc/master_list').read().strip()
         masters_ary = masters[1:-1].replace('"', "").replace(' ', "").split(',')
