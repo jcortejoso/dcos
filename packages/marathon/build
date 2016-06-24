@@ -42,4 +42,5 @@ ExecStart=/opt/mesosphere/bin/java \\
     --mesos_leader_ui_url "/mesos" \\
     --enable_features "vips,task_killing,external_volumes" \\
     --mesos_authentication_principal "dcos_marathon"
+    --leader_proxy_ssl_ignore_hostname
 EOF
