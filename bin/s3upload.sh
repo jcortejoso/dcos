@@ -3,8 +3,12 @@
 BASEDIR=`dirname $0`/..
 VERSION=`cat $BASEDIR/VERSION`
 
+dcosVersion=1.8-dev
+versionPrefix=${dcosVersion}-stratio
+finalVersion=${versionPrefix}${VERSION}
+
 local_filename=dcos_generate_config.sh
-filename=stratio-dcos-${VERSION}.sh
+filename=dcos-${finalVersion}.sh
 file=/root/cd/dcos-artifacts/testing/first/${local_filename}
 bucket=dcos-packages
 resource="/${bucket}/${filename}"
