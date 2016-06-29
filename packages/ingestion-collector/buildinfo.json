@@ -3,7 +3,7 @@
     "stratio-ingestion": {
       "kind": "git",
       "git": "https://github.com/Stratio/Ingestion.git",
-      "ref": "24cce77ded1be87ad67b5ef6f1727df6cc9ab5a3",
+      "ref": "05db935bd2eacd4f040c80be78a96122cd8af78d",
       "ref_origin": "master"
     }
   }
