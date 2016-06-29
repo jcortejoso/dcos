@@ -3,6 +3,19 @@ filebeat:
     - document_type: syslog
       paths:
         - /var/log/messages
+      max_bytes: 1024
+    - document_type: mesoslog
+      paths:
+        - /var/lib/mesos/slave/slaves/*/frameworks/*/executors/*/runs/*-*/stdout
+      max_bytes: 1024
+    - document_type: mesoslog
+      paths:
+        - /var/lib/mesos/slave/slaves/*/frameworks/*/executors/*/runs/*-*/stderr
+      max_bytes: 1024
+    - document_type: applog
+      paths:
+        - /var/lib/mesos/slave/slaves/*/frameworks/*/executors/*/runs/*-*/applog/*.log
+      max_bytes: 1024
 output:
   kafka:
     hosts: "leader.mesos:9092"
