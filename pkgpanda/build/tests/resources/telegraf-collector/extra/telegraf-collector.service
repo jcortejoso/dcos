@@ -1,5 +1,5 @@
 [Unit]
-Description=Telegraf metrics forwarder
+Description=Telegraf metrics collector
 
 [Service]
 Restart=always
@@ -8,4 +8,7 @@ RestartSec=5
 KillMode=control-group
 Delegate=true
 LimitNOFILE=infinity
-ExecStart=${PKG_PATH}/bin/telegraf -config ${PKG_PATH}/etc/telegraf-collector.conf
+Environment=PATH=/opt/mesosphere/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+Environment=JAVA_HOME=/opt/mesosphere/active/java/usr/java
+ExecStartPre=${PKG_PATH}/bin/set-consumergroup.sh
+ExecStart=${PKG_PATH}/bin/telegraf-collector-launcher.sh  ${PKG_PATH}/etc/telegraf-collector.conf

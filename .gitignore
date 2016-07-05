@@ -35,3 +35,5 @@ surefire-reports
 pylint-report.txt
 coverage.overall
 pkgpanda/integration-tests/.coverage*
+.coverage*
+

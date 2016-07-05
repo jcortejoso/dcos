@@ -278,7 +278,7 @@ class UrlSrcFetcher(SourceFetcher):
 
         assert self.kind in {'url', 'url_extract'}
 
-        if src_info.keys() != {'kind', 'sha1', 'url'}:
+        if ('kind' not in src_info) or ('sha1' not in src_info) or ('url' not in src_info):
                 raise ValidationError(
                         "url and url_extract sources must have exactly 'sha1' (sha1 of the artifact"
                         " which will be downloaded), and 'url' (url to download artifact) as options")

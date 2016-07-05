@@ -149,13 +149,16 @@ class PackageStore:
 
                 # Search the directory for buildinfo.json files, record the variants
                 self._packages_by_name[name] = dict()
-                for variant in get_variants_from_filesystem(package_folder, 'buildinfo.json'):
+                for variant in get_variants_from_filesystem(directory, 'buildinfo.json'):
                     # Skip packages we already have a build for (they're defined in the current packages
                     # directory as well as the upstream one)
                     if (name, variant) in self._packages:
                         pass
 
-                    buildinfo = load_buildinfo(package_folder, variant)
+                    buildinfo = load_buildinfo(directory, name, variant)
+                    if buildinfo is None:
+                        continue
+
                     self._packages[(name, variant)] = buildinfo
                     self._packages_by_name[name][variant] = buildinfo
                     self._package_folders[name] = package_folder
@@ -339,14 +342,18 @@ def load_config_variant(directory, variant, extension):
     return load_optional_json(directory + '/' + pkgpanda.util.variant_prefix(variant) + extension)
 
 
-def load_buildinfo(path, variant):
-    buildinfo = load_config_variant(path, variant, 'buildinfo.json')
-
-    # Fill in default / guaranteed members so code everywhere doesn't have to guard around it.
-    buildinfo.setdefault('build_script', 'build')
-    buildinfo.setdefault('docker', 'dcos-builder:latest')
-    buildinfo.setdefault('environment', dict())
-    buildinfo.setdefault('requires', list())
+def load_buildinfo(directory, name, variant):
+    # buildinfo = load_config_variant(path, variant, 'buildinfo.json')
+    all_build_info = load_config_variant(directory, variant, 'buildinfo.json')
+    try:
+        buildinfo = all_build_info[name]
+        # Fill in default / guaranteed members so code everywhere doesn't have to guard around it.
+        buildinfo.setdefault('build_script', 'build')
+        buildinfo.setdefault('docker', 'dcos-builder:latest')
+        buildinfo.setdefault('environment', dict())
+        buildinfo.setdefault('requires', list())
+    except KeyError:
+        buildinfo = None
 
     return buildinfo
 
@@ -682,6 +689,7 @@ def assert_no_duplicate_keys(lhs, rhs):
 def build_package_variants(package_store, name, clean_after_build=True, recursive=False):
     # Find the packages dir / root of the packages tree, and create a PackageStore
     results = dict()
+
     for variant in package_store.packages_by_name[name].keys():
         results[variant] = build(
             package_store,
@@ -1061,3 +1069,4 @@ def build(package_store, name, variant, clean_after_build, recursive=False):
     if clean_after_build:
         clean()
     return pkg_path
+
