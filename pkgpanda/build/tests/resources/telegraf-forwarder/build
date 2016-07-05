@@ -4,11 +4,11 @@ pushd "/pkg/"
 
 sudo chmod -R o+w+r $PKG_PATH
 
-mkdir -p "$PKG_PATH/bin"
 mkdir -p "$PKG_PATH/etc"
 
-cp -r "telegraf-0.13.1-1/bin" "$PKG_PATH/bin"
-chmod +x "$PKG_PATH/bin/telegraf"
+cp -r "src/telegraf-forwarder/telegraf-0.13.1-1/usr/bin" "$PKG_PATH"
+mv "$PKG_PATH/bin/telegraf" "$PKG_PATH/bin/telegraf-forwarder"
+chmod +x "$PKG_PATH/bin/telegraf-forwarder"
 
 cp "extra/telegraf-forwarder.conf" "$PKG_PATH/etc/telegraf-forwarder.conf"
 

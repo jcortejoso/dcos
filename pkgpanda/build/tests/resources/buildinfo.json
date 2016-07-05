@@ -1,0 +1,67 @@
+{
+    "base": {
+        "docker": "ubuntu:14.04.4"
+    },
+    "filebeat": {
+      "docker": "ubuntu:14.04.4",
+      "single_source" : {
+        "kind": "url_extract",
+        "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/filebeat-5.0.0-alpha2-x86_64.tar.gz",
+        "sha1": "902c426168096560edb9ad9792ebdcce33c7aa38"
+      }
+    },
+    "kafka": {
+      "single_source" : {
+        "kind": "url_extract",
+        "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/kafka_2.10-0.8.2.2.tgz",
+        "sha1": "2c11bc33f69f64126ba0d9cc78ed397797718fec"
+      }
+    },
+    "single_source": {
+      "docker": "ubuntu:14.04.4",
+      "single_source" : {
+        "kind": "url",
+        "url" : "file://foo",
+        "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+      }
+    },
+    "single_source_extra":{
+      "docker": "ubuntu:14.04.4",
+      "single_source" : {
+        "kind": "url",
+        "url" : "file://foo",
+        "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+      }
+    },
+    "telegraf-collector": {
+      "single_source" : {
+        "kind": "url_extract",
+        "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/telegraf-0.13.1_linux_amd64.tar.gz",
+        "sha1": "586dfd850e209435a42cf07824dd0b2c81a42057"
+      }
+    },
+    "telegraf-forwarder": {
+      "single_source" : {
+        "kind": "url_extract",
+        "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/telegraf-0.13.1_linux_amd64.tar.gz",
+        "sha1": "586dfd850e209435a42cf07824dd0b2c81a42057"
+      }
+    },
+    "url_extract-tar": {
+      "docker": "ubuntu:14.04.4",
+      "single_source" : {
+        "kind": "url_extract",
+        "url" : "file://foo.tar.gz",
+        "sha1": "56d290e877b90646394f6584e7091e5412d4a8f7"
+      }
+    },
+    "url_extract-zip": {
+      "docker": "ubuntu:14.04.4",
+      "single_source" : {
+        "kind": "url_extract",
+        "url" : "file://foo.zip",
+        "sha1": "fd02ba246e8ba1f3d4a3716013a5cf08b0bda9ae"
+      }
+    }
+}
+

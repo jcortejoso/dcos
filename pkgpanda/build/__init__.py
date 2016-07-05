@@ -259,24 +259,26 @@ class PackageStore:
                 if not os.path.isdir(package_folder):
                     continue
 
-                # If we've already found this package, it means 1+ versions have been defined. Use
-                # those and ignore everything in the upstreams.
-                if name in self._packages_by_name:
-                    continue
-
                 # Search the directory for buildinfo.json files, record the variants
-                for variant in get_variants_from_filesystem(package_folder, 'buildinfo.json'):
-                    # Only adding the default dictionary once we know we have a package.
-                    self._packages_by_name.setdefault(name, dict())
+                self._packages_by_name[name] = dict()
+                for variant in get_variants_from_filesystem(directory, 'buildinfo.json'):
+                    # Skip packages we already have a build for (they're defined in the current packages
+                    # directory as well as the upstream one)
+                    if (name, variant) in self._packages:
+                        pass
 
-                    buildinfo = load_buildinfo(package_folder, variant)
+                    buildinfo = load_buildinfo(directory, name, variant)
+                    if buildinfo is None:
+                        continue
+
                     self._packages[(name, variant)] = buildinfo
                     self._packages_by_name[name][variant] = buildinfo
+                    self._package_folders[name] = package_folder
 
-                    if name in self._package_folders:
-                        assert self._package_folders[name] == package_folder
-                    else:
-                        self._package_folders[name] = package_folder
+                # If there weren't any packages marked by buildinfo.json files, don't leave the index
+                # entry to simplify other code from having to check for empty dictionaries.
+                if len(self._packages_by_name[name]) == 0:
+                    del self._packages_by_name[name]
 
     def get_package_folder(self, name):
         return self._package_folders[name]
@@ -315,6 +317,9 @@ class PackageStore:
         directory = self._package_cache_dir + '/' + name
         check_call(['mkdir', '-p', directory])
         return directory
+
+    def get_treeinfo(self, variant):
+        return load_config_variant(self._packages_dir, variant, 'treeinfo.json')
 
     def list_trees(self):
         return get_variants_from_filesystem(self._packages_dir, 'treeinfo.json')
@@ -458,15 +463,19 @@ def load_config_variant(directory, variant, extension):
     return load_optional_json(directory + '/' + pkgpanda.util.variant_prefix(variant) + extension)
 
 
-def load_buildinfo(path, variant):
-    buildinfo = load_config_variant(path, variant, 'buildinfo.json')
-
-    # Fill in default / guaranteed members so code everywhere doesn't have to guard around it.
-    buildinfo.setdefault('build_script', 'build')
-    buildinfo.setdefault('docker', 'dcos-builder:latest')
-    buildinfo.setdefault('environment', dict())
-    buildinfo.setdefault('requires', list())
-    buildinfo.setdefault('state_directory', False)
+def load_buildinfo(directory, name, variant):
+    # buildinfo = load_config_variant(path, variant, 'buildinfo.json')
+    all_build_info = load_config_variant(directory, variant, 'buildinfo.json')
+    try:
+        buildinfo = all_build_info[name]
+        # Fill in default / guaranteed members so code everywhere doesn't have to guard around it.
+        buildinfo.setdefault('build_script', 'build')
+        buildinfo.setdefault('docker', 'dcos-builder:latest')
+        buildinfo.setdefault('environment', dict())
+        buildinfo.setdefault('requires', list())
+	buildinfo.setdefault('state_directory', False)
+    except KeyError:
+        buildinfo = None
 
     return buildinfo
 
@@ -694,6 +703,16 @@ def build_tree(package_store, mkbootstrap, tree_variant):
     return results
 
 
+def expand_single_source_alias(pkg_name, buildinfo):
+    if "sources" in buildinfo:
+        return buildinfo["sources"]
+    elif "single_source" in buildinfo:
+        return {pkg_name: buildinfo["single_source"]}
+    else:
+        print("NOTICE: No sources specified")
+        return {}
+
+
 def assert_no_duplicate_keys(lhs, rhs):
     if len(lhs.keys() & rhs.keys()) != 0:
         print("ASSERTION FAILED: Duplicate keys between {} and {}".format(lhs, rhs))
@@ -704,6 +723,7 @@ def assert_no_duplicate_keys(lhs, rhs):
 def build_package_variants(package_store, name, clean_after_build=True, recursive=False):
     # Find the packages dir / root of the packages tree, and create a PackageStore
     results = dict()
+
     for variant in package_store.packages_by_name[name].keys():
         results[variant] = build(
             package_store,
