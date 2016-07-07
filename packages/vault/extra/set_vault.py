@@ -32,5 +32,8 @@ write_str("/opt/mesosphere/etc/vault.hcl",
           "\"tcp\" {address = \"0.0.0.0:8200\" tls_cert_file = \"/opt/mesosphere/etc/stratio/secrets/gosec04.crt\" "
           "tls_key_file =\"/opt/mesosphere/etc/stratio/secrets/gosec04.key\"}"
           "backend "
-          "\"zookeeper\" {address = \"127.0.0.1:2181\" advertise_addr = \"https://" + detected_ip +
+          "\"zookeeper\" {address = \"127.0.0.1:2181\" "
+          "znode_owner = \"digest:stratio:F1xhv2cWeKWBJj53DAFpTFzEaaY=\""
+          "auth_info = \"digest:stratio:stratio\""
+          "advertise_addr = \"https://" + detected_ip +
           ":8200\" path = \"vault\"}")
