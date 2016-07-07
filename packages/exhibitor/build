@@ -24,6 +24,11 @@ pushd "$exhibitor_path"
 cp /pkg/src/exhibitor/exhibitor-standalone/src/main/resources/buildscripts/standalone/gradle/build/libs/exhibitor-1.5.6-SNAPSHOT-all.jar exhibitor.jar
 popd
 
+cp /pkg/extra/stratiopaas-exhibitor-security.xml "$PKG_PATH"
+cp /pkg/extra/stratiopaas-exhibitor-realm.properties.original "$PKG_PATH"
+envsubst '$PKG_PATH' < /pkg/extra/stratiopaas-exhibitor-security.sh > "$PKG_PATH"/stratiopaas-exhibitor-security.sh
+chmod +x "$PKG_PATH"/stratiopaas-exhibitor-security.sh
+
 exhibitor_service="$PKG_PATH/dcos.target.wants_master/dcos-exhibitor.service"
 mkdir -p $(dirname "$exhibitor_service")
 envsubst '$PKG_PATH' < /pkg/extra/dcos-exhibitor.service > "$exhibitor_service"

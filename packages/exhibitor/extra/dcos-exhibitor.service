@@ -12,5 +12,7 @@ RuntimeDirectory=dcos_exhibitor
 EnvironmentFile=/opt/mesosphere/environment
 EnvironmentFile=/opt/mesosphere/etc/dns_config
 EnvironmentFile=/opt/mesosphere/etc/exhibitor
+# random user & password
+ExecStartPre=$PKG_PATH/stratiopaas-exhibitor-security.sh
 # run in new mount namespace to create custom resolv.conf
 ExecStart=/usr/bin/unshare --mount $PKG_PATH/usr/exhibitor/start_exhibitor.py

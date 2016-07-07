@@ -1,10 +1,7 @@
 {
-  "sources": {
-    "stratio-ingestion": {
-      "kind": "git",
-      "git": "https://github.com/Stratio/Ingestion.git",
-      "ref": "05db935bd2eacd4f040c80be78a96122cd8af78d",
-      "ref_origin": "master"
-    }
+  "single_source": {
+    "kind": "url_extract",
+    "url": "http://sodio.stratio.com/nexus/service/local/repositories/releases/content/com/stratio/ingestion/stratio-ingestion-dist/0.7.0/stratio-ingestion-dist-0.7.0-bin.tar.gz",
+    "sha1": "8d8680ad931d2b6b0a72a1e824c08dd094e09228"
   }
 }
