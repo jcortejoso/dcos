@@ -2,7 +2,6 @@
 Description=Exhibitor: Zookeeper Supervisor Service
 After=network-online.target
 [Service]
-User=dcos_exhibitor
 StandardOutput=journal
 StandardError=journal
 Restart=always
@@ -14,5 +13,7 @@ EnvironmentFile=/opt/mesosphere/environment
 EnvironmentFile=/opt/mesosphere/etc/dns_config
 EnvironmentFile=/opt/mesosphere/etc/exhibitor
 EnvironmentFile=-/opt/mesosphere/etc/exhibitor-extras
+# random user & password
+ExecStartPre=$PKG_PATH/stratiopaas-exhibitor-security.sh
 # run in new mount namespace to create custom resolv.conf
 ExecStart=$PKG_PATH/usr/exhibitor/start_exhibitor.py

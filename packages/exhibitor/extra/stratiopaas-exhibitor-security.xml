@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+        http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+        version="2.5">
+<security-constraint>
+        <web-resource-collection>
+                <web-resource-name>Authorized</web-resource-name>
+                <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+                <role-name>admin</role-name>
+        </auth-constraint>
+</security-constraint>
+<security-constraint>
+        <web-resource-collection>
+                <web-resource-name>Open resources for 3dt</web-resource-name>
+                <!-- https://github.com/dcos/3dt/blob/master/endpoints_config.json -->
+                <url-pattern>/exhibitor/v1/cluster/list</url-pattern>
+                <url-pattern>/exhibitor/v1/cluster/log</url-pattern>
+                <url-pattern>/exhibitor/v1/cluster/state</url-pattern>
+                <url-pattern>/exhibitor/v1/cluster/status</url-pattern>
+                <url-pattern>/exhibitor/v1/cluster/get-state</url-pattern>
+        </web-resource-collection>
+</security-constraint>
+
+<security-role>
+        <role-name>admin</role-name>
+</security-role>
+
+<login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>stratiopaas</realm-name>
+        </login-config>
+</web-app>
