@@ -91,6 +91,10 @@ def validate_telemetry_enabled(telemetry_enabled):
     assert telemetry_enabled in can_be, 'Must be one of {}. Got {}.'.format(can_be, telemetry_enabled)
 
 
+def validate_kafka_collector_hosts(kafka_collector_hosts):
+    return True
+
+
 def validate_oauth_enabled(oauth_enabled):
     # Should correspond with oauth_enabled in gen/azure/calc.py
     if oauth_enabled in ["[[[variables('oauthEnabled')]]]", '{ "Ref" : "OAuthEnabled" }']:
@@ -274,7 +278,8 @@ entry = {
         validate_cluster_packages,
         validate_oauth_enabled,
         validate_mesos_dns_ip_sources,
-        validate_telemetry_enabled],
+        validate_telemetry_enabled,
+        validate_kafka_collector_hosts],
     'default': {
         'bootstrap_variant': calculate_bootstrap_variant,
         'weights': '',
@@ -282,6 +287,7 @@ entry = {
         'oauth_enabled': 'true',
         'oauth_available': calculate_oauth_available,
         'telemetry_enabled': 'true',
+        'kafka_collector_hosts': '',
         'docker_remove_delay': '1hrs',
         'gc_delay': '2days',
         'ip_detect_contents': calculate_ip_detect_contents,

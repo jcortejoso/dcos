@@ -8,4 +8,5 @@ RestartSec=5
 KillMode=control-group
 Delegate=true
 LimitNOFILE=infinity
-ExecStart=${PKG_PATH}/bin/filebeat/filebeat -c ${PKG_PATH}/bin/filebeat/filebeat.yml
+ExecStartPre=${PKG_PATH}/bin/filebeat_kafka_collector_hosts.sh
+ExecStart=${PKG_PATH}/bin/filebeat/filebeat -c ${PKG_PATH}/etc/filebeat.yml

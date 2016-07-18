@@ -10,12 +10,16 @@ cp -r "src/telegraf-forwarder/telegraf-0.13.1-1/usr/bin" "$PKG_PATH"
 mv "$PKG_PATH/bin/telegraf" "$PKG_PATH/bin/telegraf-forwarder"
 chmod +x "$PKG_PATH/bin/telegraf-forwarder"
 
-cp "extra/telegraf-forwarder.conf" "$PKG_PATH/etc/telegraf-forwarder.conf"
+cp "extra/telegraf-forwarder.conf.template" "$PKG_PATH/etc/telegraf-forwarder.conf.template"
+
+export PKG_PATH=$PKG_PATH
+
+envsubst '$PKG_PATH' < "extra/telegraf_kafka_collector_hosts.sh" > "$PKG_PATH/bin/telegraf_kafka_collector_hosts.sh"
+chmod +x "$PKG_PATH/bin/telegraf_kafka_collector_hosts.sh"
 
 popd
 # systemd
 
-export PKG_PATH=$PKG_PATH
 systemd_master="$PKG_PATH"/dcos.target.wants_master/telegraf-forwarder.service
 mkdir -p "$(dirname "$systemd_master")"
 envsubst '$PKG_PATH' < /pkg/extra/telegraf-forwarder.service > "$systemd_master"

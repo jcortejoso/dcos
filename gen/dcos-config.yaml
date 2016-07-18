@@ -238,3 +238,6 @@ package:
 {% endswitch %}
 {% endswitch %}
       "tracking":{"enabled":{{ telemetry_enabled }}}}}}
+  - path: /etc/kafka_collector_hosts
+    content: |
+      {{ kafka_collector_hosts }}

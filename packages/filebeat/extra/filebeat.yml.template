@@ -18,7 +18,7 @@ filebeat:
       max_bytes: 1024
 output:
   kafka:
-    hosts: "mesos.leader:9092"
+    hosts: "$KAFKA_COLLECTOR_HOSTS"
     topic: "logforwarder"
     client_id: "stratiopaascluster"
 
