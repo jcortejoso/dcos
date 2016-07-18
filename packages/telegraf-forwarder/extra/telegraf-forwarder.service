@@ -8,4 +8,5 @@ RestartSec=5
 KillMode=control-group
 Delegate=true
 LimitNOFILE=infinity
+ExecStartPre=${PKG_PATH}/bin/telegraf_kafka_collector_hosts.sh
 ExecStart=${PKG_PATH}/bin/telegraf-forwarder -config ${PKG_PATH}/etc/telegraf-forwarder.conf
