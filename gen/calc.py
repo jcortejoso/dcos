@@ -331,6 +331,7 @@ entry = {
         'mesos_slave_modules_json': calculate_mesos_slave_modules_json(
             default_mesos_slave_modules),
         'minuteman_forward_metrics': 'false',
+        'stratiopaas_version': '0.2.0-SNAPSHOT'
     },
     'conditional': {
         'master_discovery': {
