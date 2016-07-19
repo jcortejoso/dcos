@@ -363,7 +363,7 @@ entry = {
         validate_dcos_overlay_enable,
         validate_dcos_overlay_mtu,
         validate_dcos_remove_dockercfg_enable,
-	validate_kafka_collector_hosts]],
+	validate_kafka_collector_hosts],
     'default': {
         'bootstrap_variant': calculate_bootstrap_variant,
         'weights': '',
@@ -430,7 +430,8 @@ entry = {
         'mesos_isolation': 'cgroups/cpu,cgroups/mem,disk/du,network/cni,filesystem/linux,docker/runtime,docker/volume',
         'config_yaml': calculate_config_yaml,
         'mesos_hooks': calculate_mesos_hooks,
-        'use_mesos_hooks': calculate_use_mesos_hooks
+        'use_mesos_hooks': calculate_use_mesos_hooks,
+        'stratiopaas_version': '0.2.0-SNAPSHOT'
     },
     'conditional': {
         'master_discovery': {

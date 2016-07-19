@@ -14,3 +14,8 @@ package:
         "dcos-image-commit": "{{ dcos_image_commit }}",
         "bootstrap-id": "{{ bootstrap_id }}"
       }
+  - path: /etc/stratiopaas-version.json
+    content: |
+      {
+        "version": "{{ stratiopaas_version }}",
+      }
