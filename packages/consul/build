@@ -2,10 +2,12 @@
 
 mkdir -p ${PKG_PATH}/bin
 
+mkdir -p ${PKG_PATH}/etc/stratio/consul
+
 cp -v /pkg/src/consul/consul ${PKG_PATH}/bin
 cp -v -p /pkg/extra/start_consul.py ${PKG_PATH}/bin
 chmod +r ${PKG_PATH}/bin/start_consul.py
-cp -v -r /pkg/extra/ui ${PKG_PATH}
+cp -v -r /pkg/extra/ui ${PKG_PATH}/etc/stratio/consul
 
 # Create the service file
 #systemd_master="${PKG_PATH}/dcos.target.wants_master/consul.service"
