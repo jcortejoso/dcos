@@ -63,7 +63,7 @@ if detected_ip in masters_ary:
     consul_cmdline += [
         '-server',
         '-ui',
-        '-ui-dir', '$PKG_PATH/ui',
+        '-ui-dir', '/opt/mesosphere/etc/stratio/consul/ui',
     ]
 else:
     print("Node not in Master list. Starting Consul as agent")
