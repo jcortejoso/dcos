@@ -10,6 +10,10 @@ mkdir -p "$PKG_PATH/eslib"
 cp -R src/elasticsearch/lib/* "$PKG_PATH/eslib"
 cp -R src/elasticsearch/config "$PKG_PATH/"
 
+export PKG_PATH=$PKG_PATH
+
+envsubst '$PKG_PATH' < extra/es_clustername.sh > "$PKG_PATH/bin/es_clustername.sh"
+chmod +x "$PKG_PATH/bin/es_clustername.sh"
 
 popd
 # systemd
