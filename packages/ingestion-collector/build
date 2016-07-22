@@ -9,8 +9,8 @@ cp -r /pkg/src/ingestion-collector/examples/apache-logs/dict ${PKG_PATH}/conf
 sed -s 's|${PKG_PATH}|'"${PKG_PATH}"'|g' "/pkg/extra/ingestion-collector.conf" > "$PKG_PATH/conf/ingestion-collector.conf"
 sed -s 's|${PKG_PATH}|'"${PKG_PATH}"'|g' "/pkg/extra/ingestion-collector-morphline.conf" > "$PKG_PATH/conf/ingestion-collector-morphline.conf"
 
-envsubst '$PKG_PATH' < /pkg/extra/es_clustername.sh > "$PKG_PATH/bin/es_clustername.sh"
-chmod +x "$PKG_PATH/bin/es_clustername.sh"
+envsubst '$PKG_PATH' < /pkg/extra/es_clustername_ingestion.sh > "$PKG_PATH/bin/es_clustername_ingestion.sh"
+chmod +x "$PKG_PATH/bin/es_clustername_ingestion.sh"
 
 ## systemd
 export PKG_PATH=$PKG_PATH
