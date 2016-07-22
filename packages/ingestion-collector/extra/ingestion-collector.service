@@ -10,4 +10,5 @@ Delegate=true
 LimitNOFILE=infinity
 Environment=PATH=/opt/mesosphere/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 Environment=JAVA_HOME=/opt/mesosphere/active/java/usr/java
+ExecStartPre=${PKG_PATH}/bin/es_clustername.sh
 ExecStart=${PKG_PATH}/bin/flume-ng agent -n agent -c conf -f ${PKG_PATH}/conf/ingestion-collector.conf -Xms1024m -Xmx3096m

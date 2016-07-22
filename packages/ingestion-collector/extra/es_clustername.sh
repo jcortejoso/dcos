@@ -9,4 +9,4 @@ fi
 
 export ES_CLUSTERNAME
 
-sed -i "s|#cluster[.]name:.*|cluster.name: $ES_CLUSTERNAME|" "$PKG_PATH/config/elasticsearch.yml"
+sed -i "s|ES_CLUSTERNAME|${ES_CLUSTERNAME}|" "$PKG_PATH/conf/ingestion-collector.conf"
