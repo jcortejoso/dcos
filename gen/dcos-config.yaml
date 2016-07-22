@@ -241,3 +241,6 @@ package:
   - path: /etc/kafka_collector_hosts
     content: |
       {{ kafka_collector_hosts }}
+  - path: /etc/es_clustername
+    content: |
+      {{ es_clustername }}

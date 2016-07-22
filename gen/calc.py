@@ -95,6 +95,10 @@ def validate_kafka_collector_hosts(kafka_collector_hosts):
     return True
 
 
+def validate_es_clustername(es_clustername):
+    return True
+
+
 def validate_oauth_enabled(oauth_enabled):
     # Should correspond with oauth_enabled in gen/azure/calc.py
     if oauth_enabled in ["[[[variables('oauthEnabled')]]]", '{ "Ref" : "OAuthEnabled" }']:
@@ -279,7 +283,8 @@ entry = {
         validate_oauth_enabled,
         validate_mesos_dns_ip_sources,
         validate_telemetry_enabled,
-        validate_kafka_collector_hosts],
+        validate_kafka_collector_hosts,
+        validate_es_clustername],
     'default': {
         'bootstrap_variant': calculate_bootstrap_variant,
         'weights': '',
@@ -288,6 +293,7 @@ entry = {
         'oauth_available': calculate_oauth_available,
         'telemetry_enabled': 'true',
         'kafka_collector_hosts': '',
+        'es_clustername': 'stratiopaas',
         'docker_remove_delay': '1hrs',
         'gc_delay': '2days',
         'ip_detect_contents': calculate_ip_detect_contents,

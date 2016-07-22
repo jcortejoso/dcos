@@ -11,4 +11,5 @@ LimitNOFILE=infinity
 Environment=PATH=/opt/mesosphere/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 Environment=JAVA_HOME=/opt/mesosphere/active/java/usr/java
 Environment=ES_CLASSPATH=${PKG_PATH}/eslib/elasticsearch-1.7.5.jar:${PKG_PATH}/eslib/*:${PKG_PATH}/eslib/sigar/*
-ExecStart=${PKG_PATH}/bin/elasticsearch --cluster.name stratiopaas -Des.config=${PKG_PATH}/config/elasticsearch.yml
+ExecStartPre=${PKG_PATH}/bin/es_clustername.sh
+ExecStart=${PKG_PATH}/bin/elasticsearch --cluster.name "$ES_CLUSTERNAME" -Des.config=${PKG_PATH}/config/elasticsearch.yml
