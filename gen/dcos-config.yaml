@@ -243,4 +243,4 @@ package:
       {{ kafka_collector_hosts }}
   - path: /etc/es_clustername
     content: |
-      {{ es_clustername }}
+      {{ cluster_name }}
