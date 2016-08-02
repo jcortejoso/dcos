@@ -3,7 +3,7 @@
 BASEDIR=`dirname $0`/..
 VERSION=`cat $BASEDIR/VERSION`
 
-dcosVersion=1.8-dev
+dcosVersion=1.8
 versionPrefix=${dcosVersion}-stratio
 finalVersion=${versionPrefix}${VERSION}
 

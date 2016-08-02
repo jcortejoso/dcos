@@ -59,6 +59,7 @@ bootstrappers = {
     'dcos-minuteman': noop,
     'dcos-navstar': noop,
     'dcos-spartan': noop,
+    'dcos-vault': noop,
 }
 
 

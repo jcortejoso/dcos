@@ -409,7 +409,7 @@ def make_abs(path):
     return os.getcwd() + '/' + path
 
 
-def do_build_docker(storage_providers,name):
+def do_build_docker(storage_providers, name):
     dockerfile = pkg_resources.resource_filename('pkgpanda', 'docker/{}/Dockerfile'.format(name))
     container_name = 'dcos/{}:dockerfile-{}'.format(name, pkgpanda.util.sha1(dockerfile))
     print("Attempting to pull docker:", container_name)
@@ -455,9 +455,9 @@ def do_build_docker(storage_providers,name):
         subprocess.check_call(['docker', 'tag', container_name, name + ':latest'])
 
 
-def do_build_packages(cache_repository_url):
+def do_build_packages(storage_providers, cache_repository_url):
     for name in pkg_resources.resource_listdir('pkgpanda', 'docker/'):
-        do_build_docker(name)
+        do_build_docker(storage_providers, name)
 
     def get_build():
         # TODO(cmaloney): Stop shelling out

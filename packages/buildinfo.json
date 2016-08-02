@@ -7,9 +7,12 @@
         "single_source": {
             "git": "https://github.com/dcos/3dt.git",
             "kind": "git",
-            "ref": "6d2629213dbf2a37aa36f69625ad2589ef59c330",
+            "ref": "2bed06726e0a2b6acce42f46e8ddf4e1ee6a40d0",
             "ref_origin": "master"
-        }
+        },
+        "username": "dcos_3dt",
+        "group": "systemd-journal",
+        "state_directory": true
     },
     "adminrouter": {
         "requires": [
@@ -19,16 +22,25 @@
             "adminrouter": {
                 "git": "https://github.com/dcos/adminrouter.git",
                 "kind": "git",
-                "ref": "20f08a120fed3ae0e837d7dc2aa102c329c8fd3f",
+                "ref": "076981eb421659a9ecda609018251574af0da5d1",
                 "ref_origin": "master"
             },
             "nginx": {
                 "kind": "url_extract",
-                "old_url": "https://s3.amazonaws.com/downloads.mesosphere.io/openresty_mirror/ngx_openresty-1.7.10.2.tar.gz",
-                "sha1": "79b086d55ba8a323e36f939026769d16072a7f27",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/ngx_openresty-1.7.10.2.tar.gz"
+                "old_url": "https://openresty.org/download/openresty-1.9.15.1.tar.gz",
+                "sha1": "491a84d70ed10b79abb9d1a7496ee57a9244350b",
+                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/openresty-1.9.15.1.tar.gz"
             }
         }
+    },
+    "bootstrap": {
+        "requires": [
+          "python",
+          "python-kazoo",
+          "python-requests"
+        ],
+        "docker": "dcos-builder",
+        "state_directory": true
     },
     "boto": {
         "requires": [
@@ -64,6 +76,15 @@
             }
         }
     },
+    "cni": {
+        "docker": "golang:1.6",
+        "single_source" : {
+            "kind": "git",
+            "git": "https://github.com/containernetworking/cni.git",
+            "ref" : "b8e92ed030588120f9fda47dd359e17a3234142d",
+            "ref_origin": "master"
+        }
+    },
     "consul": {
         "single_source": {
             "kind": "url_extract",
@@ -79,10 +100,12 @@
         ],
         "single_source": {
             "kind": "url",
-            "old_url": "https://downloads.dcos.io/cosmos/0.1.5-3/cosmos-server-0.1.5-3-one-jar.jar",
-            "sha1": "8345b8dd2a7ea143c73fc2288ced4d0226d52854",
-            "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/cosmos-server-0.1.5-3-one-jar.jar"
-        }
+            "old_url": "https://downloads.dcos.io/cosmos/0.2.0-SNAPSHOT-70-refs_heads_master-4e0578df82/cosmos-server-0.2.0-SNAPSHOT-70-refs_heads_master-4e0578df82-one-jar.jar",
+            "sha1": "17e554753af99f27de492110321cf3114b697453",
+            "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/cosmos-server-0.2.0-SNAPSHOT-70-refs_heads_master-4e0578df82-one-jar.jar"
+        },
+        "username": "dcos_cosmos",
+        "state_directory": true
     },
     "curl": {
         "requires": [
@@ -96,30 +119,21 @@
             "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/curl-7.48.0.tar.gz"
         }
     },
-    "dcos-cluster-id": {
-    },
-    "dcos-history-service": {
+    "dcos-history": {
         "requires": [
             "flask",
             "python",
             "python-requests"
-        ] 
-    },
-    "dcos-image": {
-        "requires": [
-            "python",
-            "dcos-image-deps"
         ],
-        "single_source": {
-            "kind": "git_local",
-            "rel_path": "../../"
-        }
+        "state_directory": true,
+        "username": "dcos_history"
     },
     "dcos-image-deps": {
         "requires": [
             "boto",
             "python",
             "python-docopt",
+            "python-isodate",
             "python-jinja2",
             "python-markupsafe",
             "python-passlib",
@@ -127,104 +141,140 @@
             "python-requests",
             "python-retrying",
             "six"
-        ],
-        "sources": {
+            ],
+          "sources": {
             "aiohttp": {
-                "kind": "url_extract",
-                "old_url": "https://pypi.python.org/packages/source/a/aiohttp/aiohttp-0.20.0.tar.gz",
-                "sha1": "4ab710f2e03a2d8414382d98b9832a6f0022a780",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/aiohttp-0.20.0.tar.gz"
+              "kind": "url_extract",
+              "url": "https://pypi.python.org/packages/source/a/aiohttp/aiohttp-0.20.0.tar.gz",
+              "sha1": "4ab710f2e03a2d8414382d98b9832a6f0022a780"
             },
             "aiohttp_jinja2": {
-                "kind": "url",
-                "old_url": "https://pypi.python.org/packages/py3/a/aiohttp_jinja2/aiohttp_jinja2-0.7.0-py3-none-any.whl",
-                "sha1": "e5710a2a89210b3b0a804a18f00aa4023498dc38",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/aiohttp_jinja2-0.7.0-py3-none-any.whl"
+              "kind": "url",
+              "url": "https://pypi.python.org/packages/py3/a/aiohttp_jinja2/aiohttp_jinja2-0.7.0-py3-none-any.whl",
+              "sha1": "e5710a2a89210b3b0a804a18f00aa4023498dc38"
             },
             "analytics-python": {
-                "kind": "url",
-                "old_url": "https://pypi.python.org/packages/39/db/ba6ce2c3f13dd046eec3a7767a7d10607c15dc8b23d68bc125ad577f924f/analytics_python-1.2.3-py2.py3-none-any.whl",
-                "sha1": "218ff1fdecb2a0d06499618a6d0e65fcecf50c19",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/analytics_python-1.2.3-py2.py3-none-any.whl"
+              "kind": "url",
+              "url": "https://pypi.python.org/packages/39/db/ba6ce2c3f13dd046eec3a7767a7d10607c15dc8b23d68bc125ad577f924f/analytics_python-1.2.3-py2.py3-none-any.whl",
+              "sha1": "218ff1fdecb2a0d06499618a6d0e65fcecf50c19"
             },
             "azure-common": {
-                "kind": "url",
-                "old_url": "https://pypi.python.org/packages/sdk/a/azure-common/azure_common-1.0.0-py2.py3-none-any.whl",
-                "sha1": "fecf9143eba99f957141a8d519cc50d994191626",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/azure_common-1.0.0-py2.py3-none-any.whl"
+              "kind": "url",
+              "url": "https://pypi.python.org/packages/32/10/b353b328deb80e81a9288f0c684e4bbc6b022ec29110c4f90d265b07a371/azure_common-1.1.4-py2.py3-none-any.whl",
+              "sha1": "2c323e02bdcdf9047951d5d628d38c56d77355e5"
             },
             "azure-nspkg": {
-                "kind": "url",
-                "old_url": "https://pypi.python.org/packages/sdk/a/azure-nspkg/azure_nspkg-1.0.0-py2.py3-none-any.whl",
-                "sha1": "388d8454c7c487c1f810378579df1028e7847ee1",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/azure_nspkg-1.0.0-py2.py3-none-any.whl"
+              "kind": "url",
+              "url": "https://pypi.python.org/packages/sdk/a/azure-nspkg/azure_nspkg-1.0.0-py2.py3-none-any.whl",
+              "sha1": "388d8454c7c487c1f810378579df1028e7847ee1"
+            },
+            "azure-mgmt-network": {
+              "kind": "url",
+              "url": "https://pypi.python.org/packages/50/1a/4fc9ad6435f23e5978074ab7e611c0a0463646ac7da1767caa28c3c7ee8f/azure_mgmt_network-0.30.0rc4-py2.py3-none-any.whl",
+              "sha1": "d9265e84889377d8108959f89171983a65164084"
+            },
+            "azure-mgmt-nspkg": {
+              "kind": "url",
+              "url": "https://pypi.python.org/packages/c2/c4/b36695a40974b731999aa01c8c2f4fd24b78e75f3d333e2e863d82f513e4/azure_mgmt_nspkg-1.0.0-py2.py3-none-any.whl",
+              "sha1": "dd0da4f5998f9dc927e626f6265e3be099ce2ecd"
             },
             "azure-storage": {
-                "kind": "url_extract",
-                "old_url": "https://pypi.python.org/packages/source/a/azure-storage/azure-storage-0.30.0.zip",
-                "sha1": "62de894f490869a364910c3c3dfa93930e5814ba",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/azure-storage-0.30.0.zip"
+              "kind": "url",
+              "url": "https://pypi.python.org/packages/cf/23/ef729d6ef3a9d19732d480eaaf94a72799a99a38ed25eda10f8e68ffd408/azure_storage-0.32.0-py3-none-any.whl",
+              "sha1": "3cc425a291fe6359f6d786aa040059004082795d"
+            },
+            "enum34": {
+                "kind": "url",
+                "url": "https://pypi.python.org/packages/af/42/cb9355df32c69b553e72a2e28daee25d1611d2c0d9c272aa1d34204205b2/enum34-1.1.6-py3-none-any.whl",
+                "sha1": "d8746baffb8d5f6af9aacc4d563d202f0bb9c334"
+            },
+            "msrest": {
+              "kind": "url",
+              "url": "https://pypi.python.org/packages/f5/b6/176a2109be5354bbcb31bf52e32ed91b1fc398f1a30ed12db0b429c64928/msrest-0.4.0-py3-none-any.whl",
+              "sha1": "fdd0ae8546202f817f1bbddf2828bc0af1720514"
+            },
+            "msrestazure": {
+              "kind": "url",
+              "url": "https://pypi.python.org/packages/d3/37/6bf15f4e322bd2aa84ed98630a6e265f04784e40124aac5dae2e000553b0/msrestazure-0.4.1-py3-none-any.whl",
+              "sha1": "dfa52c208f423a1614a1a5dd2910e0a2295f1cb7"
             },
             "beautifulsoup4": {
-                "kind": "url",
-                "old_url": "https://pypi.python.org/packages/3.4/b/beautifulsoup4/beautifulsoup4-4.4.1-py3-none-any.whl",
-                "sha1": "774554b2c16c334f2220800950026384cae713ac",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/beautifulsoup4-4.4.1-py3-none-any.whl"
+              "kind": "url",
+              "url": "https://pypi.python.org/packages/3.4/b/beautifulsoup4/beautifulsoup4-4.4.1-py3-none-any.whl",
+              "sha1": "774554b2c16c334f2220800950026384cae713ac"
+            },
+            "certifi": {
+              "kind": "url",
+              "url": "https://pypi.python.org/packages/db/60/1ed0106bde7b14b363b15b17cc308aad93ba57d3582570f3ad7180ae0fae/certifi-2016.2.28-py2.py3-none-any.whl",
+              "sha1": "23b05f0c710004493ef65f9aa25aa44829f02aae"
             },
             "chardet": {
-                "kind": "url_extract",
-                "old_url": "https://pypi.python.org/packages/source/c/chardet/chardet-2.3.0.tar.gz",
-                "sha1": "50af8f8771ecbeb7a22567129c6c281b8bec3b1c",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/chardet-2.3.0.tar.gz"
+              "kind": "url_extract",
+              "url": "https://pypi.python.org/packages/source/c/chardet/chardet-2.3.0.tar.gz",
+              "sha1": "50af8f8771ecbeb7a22567129c6c281b8bec3b1c"
             },
             "coloredlogs": {
-                "kind": "url_extract",
-                "old_url": "https://pypi.python.org/packages/source/c/coloredlogs/coloredlogs-3.5.tar.gz",
-                "sha1": "251c88bd48ee3e23a12b416f7297202e544d0cd2",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/coloredlogs-3.5.tar.gz"
+              "kind": "url_extract",
+              "url": "https://pypi.python.org/packages/source/c/coloredlogs/coloredlogs-3.5.tar.gz",
+              "sha1": "251c88bd48ee3e23a12b416f7297202e544d0cd2"
             },
             "docker-py": {
-                "kind": "url_extract",
-                "old_url": "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.7.2.tar.gz",
-                "sha1": "bc4f33cac9d6ad13c41ac7ff3e76de30fef8c4cf",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/docker-py-1.7.2.tar.gz"
+              "kind": "url_extract",
+              "url": "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.7.2.tar.gz",
+              "sha1": "bc4f33cac9d6ad13c41ac7ff3e76de30fef8c4cf"
             },
             "docutils": {
-                "kind": "url",
-                "old_url": "https://pypi.python.org/packages/3.4/d/docutils/docutils-0.12-py3-none-any.whl",
-                "sha1": "88749802f8d61883da36a5abfca171a4ae60cc71",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/docutils-0.12-py3-none-any.whl"
+              "kind": "url",
+              "url": "https://pypi.python.org/packages/3.4/d/docutils/docutils-0.12-py3-none-any.whl",
+              "sha1": "88749802f8d61883da36a5abfca171a4ae60cc71"
             },
             "humanfriendly": {
-                "kind": "url_extract",
-                "old_url": "https://pypi.python.org/packages/source/h/humanfriendly/humanfriendly-1.44.3.tar.gz",
-                "sha1": "89c166308420a56cd5d8ee9d7858dd8085078e00",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/humanfriendly-1.44.3.tar.gz"
+              "kind": "url_extract",
+              "url": "https://pypi.python.org/packages/source/h/humanfriendly/humanfriendly-1.44.3.tar.gz",
+              "sha1": "89c166308420a56cd5d8ee9d7858dd8085078e00"
+            },
+            "keyring": {
+              "kind": "url",
+              "url": "https://pypi.python.org/packages/9a/1e/8b0290dc98de928b04c6fc73c301faebf52b9479a3c772edc77b92b4d6f6/keyring-9.1-py2.py3-none-any.whl",
+              "sha1": "9c1d41e9e9e30c02cb49f4d6c7f377311c0f347d"
+            },
+            "oauthlib": {
+              "kind": "url_extract",
+              "url": "https://pypi.python.org/packages/a8/11/fb71ced7057b2a8929f51959f4e97bcee9f687aaf896c521984e67118b90/oauthlib-1.1.2.tar.gz",
+              "sha1": "68e894d3b41080e14ec3a93ce0858d546617e809"
             },
             "py": {
-                "kind": "url",
-                "old_url": "https://pypi.python.org/packages/2.7/p/py/py-1.4.31-py2.py3-none-any.whl",
-                "sha1": "ffcba27ff8391f46904c2762135a383d29a4bf1b",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/py-1.4.31-py2.py3-none-any.whl"
+              "kind": "url",
+              "url": "https://pypi.python.org/packages/2.7/p/py/py-1.4.31-py2.py3-none-any.whl",
+              "sha1": "ffcba27ff8391f46904c2762135a383d29a4bf1b"
+            },
+            "requests-oauthlib": {
+              "kind": "url",
+              "url": "https://pypi.python.org/packages/3d/b9/895abf47ce871c80460727ba385d10d246a2d9ded1bc82ba3748d02e5196/requests_oauthlib-0.6.1-py2.py3-none-any.whl",
+              "sha1": "f364a323b1a96dea6d0f1ef7286144613504c9d7"
             },
             "waitress": {
-                "kind": "url_extract",
-                "old_url": "https://pypi.python.org/packages/source/w/waitress/waitress-0.8.10.tar.gz",
-                "sha1": "ed41791a3c7dcc8e8416d37bda87983c8402db87",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/waitress-0.8.10.tar.gz"
+              "kind": "url_extract",
+              "url": "https://pypi.python.org/packages/source/w/waitress/waitress-0.8.10.tar.gz",
+              "sha1": "ed41791a3c7dcc8e8416d37bda87983c8402db87"
             },
             "webob": {
-                "kind": "url",
-                "old_url": "https://pypi.python.org/packages/3.4/W/WebOb/WebOb-1.5.1-py2.py3-none-any.whl",
-                "sha1": "36e038d2158248d27ec109ff7d23f5fa4e112483",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/WebOb-1.5.1-py2.py3-none-any.whl"
+              "kind": "url",
+              "url": "https://pypi.python.org/packages/3.4/W/WebOb/WebOb-1.5.1-py2.py3-none-any.whl",
+              "sha1": "36e038d2158248d27ec109ff7d23f5fa4e112483"
             },
             "websocket-client": {
-                "kind": "url_extract",
-                "old_url": "https://pypi.python.org/packages/source/w/websocket-client/websocket_client-0.35.0.tar.gz",
-                "sha1": "ecb09f5e740ca4f8bc8291de312718bb1cf2d452",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/websocket_client-0.35.0.tar.gz"
+              "kind": "url_extract",
+              "url": "https://pypi.python.org/packages/source/w/websocket-client/websocket_client-0.35.0.tar.gz",
+              "sha1": "ecb09f5e740ca4f8bc8291de312718bb1cf2d452"
             }
+        }
+    },
+    "dcos-image": {
+        "requires": ["python", "dcos-image-deps", "python-azure-mgmt-resource"],
+        "single_source": {
+            "kind": "git_local",
+            "rel_path": "../../"
         }
     },
     "dcos-installer": {
@@ -242,36 +292,50 @@
         "single_source": {
             "git": "https://github.com/dcos/dcos-installer-ui.git",
             "kind": "git",
-            "ref": "34ff08c0ffa7af2f56ee29865f10f68e351df3f3",
+            "ref": "323de0ef8bf8ce67f91e3f12a33e0d8ba8f4a2c3",
             "ref_origin": "release/1.7"
         }
     },
+    "dcos-integration-test": {
+        "requires": [
+          "boto",
+          "dcos-image-deps",
+          "dnspython",
+          "pytest",
+          "python",
+          "python-requests",
+          "python-retrying",
+          "python-kazoo"]
+    },
     "dcos-oauth": {
         "docker": "golang:1.6",
-        "single_source": {
-            "git": "https://github.com/dcos/dcos-oauth.git",
-            "kind": "git",
-            "ref": "5780c204b87bfb5a23e209b3856d45d1f4624f4b",
-            "ref_origin": "master"
-        }
+        "single_source" : {
+          "kind": "git",
+          "git": "https://github.com/dcos/dcos-oauth.git",
+          "ref": "2b7b0a5aa3810b4f517a5b18516a4bbd30e28fee",
+          "ref_origin": "master"
+        },
+        "username": "dcos_oauth",
+        "state_directory": true
     },
     "dcos-signal": {
-        "docker": "golang:1.6",
-        "single_source": {
-            "git": "https://github.com/dcos/dcos-signal.git",
+          "docker": "golang:1.6",
+          "single_source" : {
             "kind": "git",
-            "ref": "26bdd0b8a105310fd8913b0fa8df346326406925",
-            "ref_origin": "master"
-        }
+            "git": "https://github.com/dcos/dcos-signal.git",
+            "ref": "7e7cb7a62cb27c175e1864eca98fde173d8267b7",
+            "ref_origin": "1.1.9"
+          },
+          "username": "dcos_signal"
     },
     "dcos-ui": {
-        "docker": "node:4.3",
-        "single_source": {
-            "git": "https://github.com/dcos/dcos-ui.git",
+          "docker": "node:4.4.4",
+          "single_source" : {
             "kind": "git",
-            "ref": "fe4dd8e1ca92765a3d6d826f7dd9e3dbd7c2efed",
-            "ref_origin": "release/1.7.1"
-        }
+            "git": "https://github.com/dcos/dcos-ui.git",
+            "ref": "8ebdf211ad4cd5c5b3489e4f9bdfc91891a6d410",
+            "ref_origin": "master"
+          }
     },
     "dnspython": {
         "requires": [
@@ -282,6 +346,14 @@
             "kind": "git",
             "ref": "f9597eefe62c1bcda08c1a89140248060a07c73c",
             "ref_origin": "v1.12.0-py3"
+        }
+    },
+    "dvdcli": {
+        "single_source": {
+            "kind": "url",
+            "old_url": "https://downloads.dcos.io/pkgpanda-artifact-cache/dvdcli-Linux-x86_64-0.1.0.tar.gz",
+            "sha1": "a0d7757939eefdf1ad28bc44919cdba5b6310528",
+            "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/dvdcli-Linux-x86_64-0.1.0.tar.gz"
         }
     },
     "elasticsearch": {
@@ -304,26 +376,39 @@
                 "sha1": "efc229b75e0b0614a187efe858faf33027bcf3d1",
                 "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/otp_src_18.3.tar.gz"
             }
-        }
+        },
+        "username": "dcos_epmd"
     },
     "exhibitor": {
-        "requires": [
-            "java"
-        ],
-        "sources": {
+          "requires": ["java", "python-requests"],
+          "sources": {
             "exhibitor": {
-                "git": "https://github.com/dcos/exhibitor.git",
-                "kind": "git",
-                "ref": "7d286ac4a5d458ce182bee53445b8883153b88a9",
-                "ref_origin": "master"
+              "kind": "git",
+              "git": "https://github.com/dcos/exhibitor.git",
+              "ref": "a04453d14d49e1a3774bef235462b120e1eff3e1",
+              "ref_origin": "master"
             },
             "zookeeper": {
-                "kind": "url_extract",
-                "old_url": "https://s3.amazonaws.com/downloads.mesosphere.io/zookeeper/zookeeper-3.4.6.tar.gz",
-                "sha1": "2a9e53f5990dfe0965834a525fbcad226bf93474",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/zookeeper-3.4.6.tar.gz"
+              "kind": "url_extract",
+              "old_url": "https://downloads.mesosphere.com/zookeeper/zookeeper-3.4.8.tar.gz",
+              "sha1": "51b61611a329294f75aed82f3a4517a4b6ff116f",
+              "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/zookeeper-3.4.8.tar.gz"
+            },
+            "log4j": {
+                "kind": "url",
+                "old_url": "https://repo1.maven.org/maven2/de/bwaldvogel/log4j-systemd-journal-appender/1.3.2/log4j-systemd-journal-appender-1.3.2.jar",
+                "sha1": "4baf482f0de6ed330e0d3ca77e062f6d944039b7",
+                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/log4j-systemd-journal-appender-1.3.2.jar"
+            },
+            "jna": {
+                "kind": "url",
+                "old_url": "https://repo1.maven.org/maven2/net/java/dev/jna/jna/4.2.2/jna-4.2.2.jar",
+                "sha1": "5012450aee579c3118ff09461d5ce210e0cdc2a9",
+                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/jna-4.2.2.jar"
             }
-        }
+          },
+          "username": "dcos_exhibitor",
+          "state_directory": true
     },
     "filebeat": {
         "single_source": {
@@ -397,9 +482,9 @@
         "sources": {
             "java": {
                 "kind": "url_extract",
-                "old_url": "https://downloads.mesosphere.com/java/jdk-8u51-linux-x64.tar.gz",
-                "sha1": "da1fe118417180c374ba9446f2ea3b4206db2ed6",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/jdk-8u51-linux-x64.tar.gz"
+                "old_url": "https://downloads.mesosphere.com/java/jdk-8u92-linux-x64.tar.gz",
+                "sha1": "efb9e9fed2f146ef2e97040415522bad22015e36",
+                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/jdk-8u92-linux-x64.tar.gz"
             }
         }
     },
@@ -409,19 +494,6 @@
             "old_url": "http://ftp.cixug.es/apache/kafka/0.8.2.2/kafka_2.10-0.8.2.2.tgz",
             "sha1": "2c11bc33f69f64126ba0d9cc78ed397797718fec",
             "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/kafka_2.10-0.8.2.2.tgz"
-        }
-    },
-    "keepalived": {
-        "requires": [
-            "openssl"
-        ],
-        "sources": {
-            "keepalived": {
-                "kind": "url_extract",
-                "old_url": "http://keepalived.org/software/keepalived-1.2.17.tar.gz",
-                "sha1": "e332804788463448bd98dd80e806cecea0f3bd18",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/keepalived-1.2.17.tar.gz"
-            }
         }
     },
     "libevent": {
@@ -435,6 +507,14 @@
             "ref_origin": "release-2.0.22-stable"
         }
     },
+    "libsodium": {
+        "single_source" : {
+            "kind": "url_extract",
+            "old_url": "https://download.libsodium.org/libsodium/releases/libsodium-1.0.9.tar.gz",
+            "sha1": "6e886fa6c7b0c0dc8a9039f49e1b04532401a6ae",
+            "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/libsodium-1.0.9.tar.gz"
+        }
+    },
     "logrotate": {
         "single_source": {
             "kind": "url_extract",
@@ -444,69 +524,93 @@
         }
     },
     "marathon": {
-        "requires": [
-            "java",
-            "exhibitor"
-        ],
-        "single_source": {
+          "requires": ["java"],
+          "single_source": {
             "kind": "url_extract",
-            "old_url": "https://s3-eu-west-1.amazonaws.com/dcos-packages/marathon-1.2.0.tgz",
-            "sha1": "47fb58a9031813744ad813830d476c3f7970aa6b",
-            "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/marathon-1.2.0.tgz"
-        }
+            "old_url": "http://downloads.mesosphere.io/marathon/v1.2.0-RC5/marathon-1.2.0-RC5.tgz",
+            "sha1": "0c7bf7dbe6f88896d30fd86a19c6de38a5955f12",
+            "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/marathon-1.2.0-RC5.tgz"
+          },
+          "username": "dcos_marathon",
+          "state_directory": true
     },
     "mesos": {
-        "docker": "dcos-builder",
-        "environment": {
+          "requires": ["openssl", "libevent", "curl"],
+          "docker": "dcos-builder",
+          "single_source" : {
+            "kind": "git",
+            "git": "https://github.com/mesosphere/mesos",
+            "ref": "62458e19bd67b429674fc6692f66c41f8c65b123",
+            "ref_origin" : "dcos-mesos-tag-1.0.0-rc4"
+          },
+          "environment": {
             "JAVA_LIBRARY_PATH": "/opt/mesosphere/lib",
             "MESOS_NATIVE_JAVA_LIBRARY": "/opt/mesosphere/lib/libmesos.so"
-        },
-        "requires": [
-            "mesos-buildenv",
-            "exhibitor",
-            "openssl",
-            "libevent",
-            "curl"
-        ],
-        "single_source": {
-            "git": "https://github.com/mesosphere/mesos",
-            "kind": "git",
-            "ref": "76c87d55a78e8cbb380fc0c71388ccec53ed1dc8",
-            "ref_origin": "dcos-1.7"
-        }
-    },
-    "mesos-buildenv": {
-        "single_source": {
-            "git": "https://github.com/dcos/mesos-buildenv.git",
-            "kind": "git",
-            "ref": "333a8528f29555b25f5942c4f79665f9e44fc0c1",
-            "ref_origin": "master"
-        }
+          },
+          "state_directory": true
     },
     "mesos-dns": {
         "sources": {
             "mesos-dns": {
-                "kind": "url",
-                "old_url": "https://github.com/mesosphere/mesos-dns/releases/download/v0.5.2/mesos-dns-v0.5.2-linux-amd64",
-                "sha1": "e731deba705f6599fb6c20bf760e72480b895b82",
-                "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/mesos-dns-v0.5.2-linux-amd64"
+              "kind": "url",
+              "old_url": "https://734-26509179-gh.circle-artifacts.com/0//tmp/circle-artifacts.pA0dRJZ/mesos-dns-v0.5.3-rc1-16-g22146c6-linux-amd64",
+              "sha1": "04feb2e5d91dd2a51a779b900149dc312c4f1c86",
+              "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/mesos-dns-v0.5.3-rc1-16-g22146c6-linux-amd64"
             }
+        },
+        "username": "dcos_mesos_dns"
+    },
+    "mesos-modules": {
+        "requires": ["mesos"],
+        "docker": "dcos-builder",
+        "single_source" : {
+          "kind": "git",
+          "git": "https://github.com/dcos/dcos-mesos-modules.git",
+          "ref": "8d09c2d44f606df23a57254ebcbc5f2722a3b677",
+          "ref_origin": "master"
         }
     },
-    "minuteman": {
-        "requires": [
-            "openssl",
-            "ncurses",
-            "erlang"
-        ],
-        "sources": {
-            "minuteman": {
-                "git": "https://github.com/dcos/minuteman.git",
-                "kind": "git",
-                "ref": "78628d599c955f420aa316efc0424999b999a18f",
-                "ref_origin": "master"
-            }
+    "mesos-overlay-modules": {
+        "requires": ["mesos"],
+        "docker": "dcos-builder",
+        "single_source" : {
+          "kind": "git",
+          "git": "https://github.com/dcos/mesos-overlay-modules.git",
+          "ref": "bc54123f6f90b4fdf9347a8d3a25d45efcf8e32c",
+          "ref_origin": "master"
         }
+    },
+    "metronome": {
+          "docker": "dcos-builder",
+          "requires": ["java", "exhibitor"],
+          "single_source": {
+            "kind": "url_extract",
+            "old_url": "https://downloads.mesosphere.com/maven/dcos/metronome/0.1.6-SNAPSHOT/metronome-0.1.6-SNAPSHOT.tgz",
+            "sha1": "0307cc57db368f2fc269542a3b043bc6d3215c45",
+            "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/metronome-0.1.6-SNAPSHOT.tgz"
+          }
+    },
+    "minuteman": {
+          "requires": ["openssl", "ncurses", "erlang"],
+          "sources": {
+            "minuteman": {
+              "kind": "git",
+              "git": "https://github.com/dcos/minuteman.git",
+              "ref": "009d43fa884e52f57e1fa18655787e2f3d944c84",
+              "ref_origin": "master"
+            }
+          }
+    },
+    "navstar": {
+          "requires": ["openssl", "ncurses", "erlang", "libsodium"],
+          "sources": {
+            "navstar": {
+              "kind": "git",
+              "git": "https://github.com/dcos/navstar.git",
+              "ref": "63020067a93f49677b0659bee6d44f6f3762663c",
+              "ref_origin": "master"
+            }
+          }
     },
     "ncurses": {
         "single_source": {
@@ -516,6 +620,15 @@
             "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/ncurses-6.0.tar.gz"
         }
     },
+    "octarine": {
+          "docker": "golang:1.6",
+          "single_source" : {
+            "kind": "git",
+            "git": "https://github.com/dcos/octarine.git",
+            "ref": "c792e3d7f4729de7d4532b9f347f3690513d2d5e",
+            "ref_origin": "master"
+          }
+    },
     "openssl": {
         "single_source": {
             "kind": "url_extract",
@@ -524,20 +637,54 @@
             "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/openssl-1.0.2h.tar.gz"
         }
     },
+    "pytest": {
+          "requires": ["python"],
+          "sources": {
+            "pytest": {
+              "kind": "url_extract",
+              "url": "https://pypi.python.org/packages/f0/ee/6e2522c968339dca7d9abfd5e71312abeeb5ee902e09b4daf44f07b2f907/pytest-2.9.2.tar.gz",
+              "sha1": "586675a7ce39cd33e16b34cc539240b38c10d5e8"
+            },
+            "teamcity-messages": {
+              "kind": "url_extract",
+              "url": "https://pypi.python.org/packages/69/0f/7ba789bcc0ad43b7d88582722b2dbeb0595d5f9b66e55fbc3e01bb771459/teamcity-messages-1.19.tar.gz",
+              "sha1": "6b7fe243a3db67577f3b5b3134850256e3df5aa2"
+            }
+          }
+    },
     "python": {
-        "environment": {
+          "docker": "dcos-builder",
+          "requires": ["openssl"],
+          "environment": {
             "PYTHONPATH": "/opt/mesosphere/lib/python3.4/site-packages",
             "PYTHONUNBUFFERED": "true"
-        },
-        "requires": [
-            "openssl"
-        ],
-        "single_source": {
-            "kind": "url_extract",
-            "old_url": "https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tgz",
-            "sha1": "5c756dded3492a9842efa5a10d610820b8f753e7",
-            "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/Python-3.4.2.tgz"
+          },
+          "sources": {
+            "python": {
+              "kind": "url_extract",
+              "old_url": "https://www.python.org/ftp/python/3.4.5/Python-3.4.5.tgz",
+              "sha1": "7d192dec3dfc45a2d4a05b8d3512fa6fa2f64a72",
+              "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/Python-3.4.5.tgz"
+            },
+            "setuptools": {
+              "kind": "url",
+              "url": "https://pypi.python.org/packages/15/b7/a76624e5a3b18c8c1c8d33a5240b34cdabb08aef2da44b536a8b53ba1a45/setuptools-21.0.0-py2.py3-none-any.whl",
+              "sha1": "0f1ac25c51d66e269d1449ad8650624fca8e3f03"
+            },
+            "pip": {
+              "kind": "url",
+              "url": "https://pypi.python.org/packages/9c/32/004ce0852e0a127f07f358b715015763273799bd798956fa930814b60f39/pip-8.1.2-py2.py3-none-any.whl",
+              "sha1": "112a41bf8e06c41420b105c5f702ecc7f53ab6c4"
+            }
         }
+    },
+    "python-azure-mgmt-resource": {
+          "requires": ["python", "dcos-image-deps"],
+          "single_source": {
+              "kind": "url",
+              "url": "https://pypi.python.org/packages/3b/4d/af3f20257c73a08b4d2bb41d7873c6f5ca806bbc561d3ff335b613ab507c/azure_mgmt_resource-0.30.0rc4-py2.py3-none-any.whl",
+              "sha1": "56067fa602537bef926b7db3740e0df7e7229f24"
+          }
     },
     "python-dateutil": {
         "requires": [
@@ -562,6 +709,14 @@
             "ref": "944641a7357376a43151bd4a3ca44f9c07c4d1ae",
             "ref_origin": "0.6.2"
         }
+    },
+    "python-isodate": {
+          "requires": ["python"],
+          "single_source": {
+              "kind": "url_extract",
+              "url": "https://pypi.python.org/packages/f4/5b/fe03d46ced80639b7be9285492dc8ce069b841c0cebe5baacdd9b090b164/isodate-0.5.4.tar.gz",
+              "sha1": "40ccf07a8e46284a79cfc4d41e151f71ae63f535"
+          }
     },
     "python-jinja2": {
         "requires": [
@@ -641,6 +796,15 @@
             "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/retrying-1.3.3.tar.gz"
         }
     },
+    "rexray": {
+          "docker": "golang:1.6",
+          "single_source" : {
+            "kind": "git",
+            "git": "https://github.com/dcos/rexray.git",
+            "ref": "1816ee3868550e07b90f00f57bfd7f737235cd93",
+            "ref_origin": "v0.3.3-dcos"
+          }
+    },
     "six": {
         "requires": [
             "python"
@@ -655,20 +819,15 @@
         }
     },
     "spartan": {
-        "requires": [
-            "openssl",
-            "ncurses",
-            "erlang",
-            "toybox"
-        ],
-        "sources": {
+          "requires": ["openssl", "ncurses", "erlang", "toybox"],
+          "sources": {
             "spartan": {
-                "git": "https://github.com/dcos/spartan.git",
-                "kind": "git",
-                "ref": "020357146ae0411177e353472608ab20a32c53bb",
-                "ref_origin": "master"
+              "kind": "git",
+              "git": "https://github.com/dcos/spartan.git",
+              "ref": "5be98261ad2bb39a2222f4f424cf2ff5b50bddbb",
+              "ref_origin": "master"
             }
-        }
+          }
     },
     "strace": {
         "single_source": {
@@ -726,13 +885,6 @@
             "sha1": "6824e97467d093183722f2aadb07986035d0c5b3",
             "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/vault.tar.gz"
         }
-    },
-    "zk-value-consensus": {
-        "requires": [
-            "python", 
-            "python-kazoo", 
-            "python-retrying"
-        ]
     }
 }
 

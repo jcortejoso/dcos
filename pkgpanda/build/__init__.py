@@ -473,7 +473,7 @@ def load_buildinfo(directory, name, variant):
         buildinfo.setdefault('docker', 'dcos-builder:latest')
         buildinfo.setdefault('environment', dict())
         buildinfo.setdefault('requires', list())
-	buildinfo.setdefault('state_directory', False)
+        buildinfo.setdefault('state_directory', False)
     except KeyError:
         buildinfo = None
 
