@@ -11,6 +11,3 @@ ExecStartPre=/opt/mesosphere/bin/python /opt/mesosphere/bin/set_vault.py
 ExecStartPre=/bin/ping -c1 ready.spartan
 ExecStartPre=//opt/mesosphere/bin/bootstrap dcos-vault
 ExecStart=/opt/mesosphere/bin/vault server -config /opt/mesosphere/etc/vault.hcl
-ExecStartPost=/bin/bash -c 'sleep 5; netstat -anp | grep 8200 | grep LISTEN'
-ExecStartPost=/opt/mesosphere/bin/python /opt/mesosphere/bin/init_vault.py
-ExecStartPost=/opt/mesosphere/bin/python /opt/mesosphere/bin/unseal_vault.py
