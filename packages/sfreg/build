@@ -1,0 +1,29 @@
+#!/bin/bash
+
+pushd "/pkg/"
+
+sudo chmod -R o+w+r $PKG_PATH
+
+mkdir -p "$PKG_PATH/bin"
+
+cp "extra/sfreg.py" "$PKG_PATH/bin"
+chmod +x "$PKG_PATH/bin/sfreg.py"
+
+popd
+# systemd
+
+systemd_master="$PKG_PATH"/dcos.target.wants_master/sfreg.service
+mkdir -p "$(dirname "$systemd_master")"
+envsubst '$PKG_PATH' < /pkg/extra/sfreg.service > "$systemd_master"
+
+systemd_slave="$PKG_PATH"/dcos.target.wants_slave/sfreg.service
+mkdir -p "$(dirname "$systemd_slave")"
+envsubst '$PKG_PATH' < /pkg/extra/sfreg.service > "$systemd_slave"
+
+systemd_slave_public="$PKG_PATH"/dcos.target.wants_slave_public/sfreg.service
+mkdir -p "$(dirname "$systemd_slave_public")"
+envsubst '$PKG_PATH' < /pkg/extra/sfreg.service > "$systemd_slave_public"
+
+cp "/pkg/extra/sfreg.timer" "$PKG_PATH"/dcos.target.wants_master/sfreg.timer 
+cp "/pkg/extra/sfreg.timer" "$PKG_PATH"/dcos.target.wants_slave/sfreg.timer 
+cp "/pkg/extra/sfreg.timer" "$PKG_PATH"/dcos.target.wants_slave_public/sfreg.timer 

@@ -1,0 +1,6 @@
+[Unit]
+Description=SFReg: Service Fabric components registered into Consul
+[Service]
+Type=simple
+EnvironmentFile=/opt/mesosphere/environment
+ExecStart=/opt/mesosphere/bin/python ${PKG_PATH}/bin/sfreg.py

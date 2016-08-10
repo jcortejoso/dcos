@@ -1,0 +1,5 @@
+[Unit]
+Description=SFReg Timer: Timer to trigger every 5 minutes
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=10min

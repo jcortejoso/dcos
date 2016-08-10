@@ -805,6 +805,11 @@
             "ref_origin": "v0.3.3-dcos"
           }
     },
+    "sfreg": {
+        "requires": [
+            "python"
+        ]
+    },
     "six": {
         "requires": [
             "python"
