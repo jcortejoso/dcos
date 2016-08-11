@@ -13,12 +13,19 @@ logging.basicConfig(level=logging.WARN, format="%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger("sfreg")
 logger.setLevel(logging.INFO)
 
+def getIP():
+    p = subprocess.Popen(['/opt/mesosphere/bin/detect_ip'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    IP, err = p.communicate()
+    rc = p.returncode
+    return IP.decode("utf-8").rstrip()
+
 
 #CONSTANTS
 URL_MESOS = "leader.mesos"
 URL_MASTER = "http://" + URL_MESOS
-URL_CONSUL = URL_MASTER + ":8500"
 URL_3DT = URL_MASTER + ":1050"
+IP = getIP()
+URL_CONSUL = "http://" + IP + ":8500"
 
 
 #FUNCTIONS
@@ -46,18 +53,18 @@ def registerServiceInConsul( name, address, checks ):
     #}
     url_register = URL_CONSUL + "/v1/agent/service/register"
     service = {}
-    service["ID"] = name
+    service["ID"] = name + ":" + address
     service["Name"] = name
     service["Address"] = address
     service["checks"] = checks
     requests.put(url_register, data=service)
     return requests.put(url_register, data=json.dumps(service))
 
-def getServiceFabricComponents(): 
+def getServiceFabricComponents():
     logger.debug("getServiceFabricComponents from " + URL_MESOS)
-    
+
     url_units = URL_3DT + "/system/health/v1/report"
-    
+
     logger.debug("Getting units from " + url_units)
     #READ UNITS
     with urllib.request.urlopen(url_units) as response:
@@ -65,35 +72,51 @@ def getServiceFabricComponents():
     logger.debug(data)
     return data
 
-def allowedUnitName( name ):
-    return name.endswith(".service")
-
 def formatUnitName( name ):
-    return name.replace(".service","")
+    return name.rsplit('.',1)[0]
 
-def getIP():
-    p = subprocess.Popen(['/opt/mesosphere/bin/detect_ip'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    IP, err = p.communicate()
-    rc = p.returncode
-    return IP.decode("utf-8").rstrip()
+def getFilteredServiceFabricComponents():
+    filtered = []
+    toBeDiscarded = []
 
-#MAIN    
+    serviceFabricComponents = getServiceFabricComponents()
+
+    # check if discard and add to discard list
+    for key, value in serviceFabricComponents["Units"].items():
+        # discard timer services
+        if value["UnitName"].endswith(".timer"):
+            toBeDiscarded.append(value["UnitName"].replace(".timer",""))
+            logger.debug("To be discarded: " + value["UnitName"])
+
+    # filter
+    for key, value in serviceFabricComponents["Units"].items():
+            name = formatUnitName( value["UnitName"] )
+            if name not in toBeDiscarded:
+                item = value
+                item["UnitName"] = name
+                filtered.append(item)
+                logger.debug("Adding " + name)
+            else:
+                logger.debug("Discarding " + name)
+
+    return filtered
+
+
+
+#MAIN
 currentSF = []
-IP = getIP()
-serviceFabricComponents = getServiceFabricComponents()
+filteredServiceFabricComponents = getFilteredServiceFabricComponents()
 
 # Register current service fabric components
-for key, value in serviceFabricComponents["Units"].items():
+for value in filteredServiceFabricComponents:
     for node in value["Nodes"]:
-        # filter by IP: own services 
-        if node["IP"] == IP and allowedUnitName(value["UnitName"]):
-          name = formatUnitName(value["UnitName"])
+        # filter by IP: own services
+        if node["IP"] == IP:
+          name = value["UnitName"]
           checks = [{'script':'systemctl status ' + name,'interval':'30s'}]
           r = registerServiceInConsul(name, IP, checks)
           logger.info("Registering " + name + " in " + IP + " -> " + str(r.status_code))
           currentSF.append(name)
-          #r = deregisterServiceInConsul(formatUnitName(value["UnitName"]))
-          #logger.info("Deregistering " + formatUnitName(value["UnitName"]) + " -> " + str(r.status_code))
 
 # Unregister old ones
 # read prev status file
@@ -108,3 +131,4 @@ for s in set(prevSF) - set(currentSF):
 
 # save status file for next execution
 pickle.dump(currentSF,open( "sfstatus", "wb" ))
+
