@@ -491,9 +491,9 @@
     "kafka": {
         "single_source": {
             "kind": "url_extract",
-            "old_url": "http://ftp.cixug.es/apache/kafka/0.8.2.2/kafka_2.10-0.8.2.2.tgz",
-            "sha1": "2c11bc33f69f64126ba0d9cc78ed397797718fec",
-            "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/kafka_2.10-0.8.2.2.tgz"
+            "old_url": "http://ftp.cixug.es/apache/kafka/0.10.0.0/kafka_2.11-0.10.0.0.tgz",
+            "sha1": "2f2b2c398b285358f235c1cc503462ae6672fc88",
+            "url": "http://sodio.stratio.com/nexus/service/local/repositories/paas/content/dcos/dependencies/kafka_2.10-0.10.0.0.tgz"
         }
     },
     "libevent": {

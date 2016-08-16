@@ -1,0 +1,44 @@
+filebeat:
+  prospectors:
+    - document_type: syslog
+      paths:
+        - /var/log/messages
+      max_bytes: 1024
+    - document_type: mesoslog
+      paths:
+        - /var/lib/mesos/slave/slaves/*/frameworks/*/executors/*/runs/*-*/stdout
+      max_bytes: 1024
+    - document_type: mesoslog
+      paths:
+        - /var/lib/mesos/slave/slaves/*/frameworks/*/executors/*/runs/*-*/stderr
+      max_bytes: 1024
+    - document_type: applog
+      paths:
+        - /var/lib/mesos/slave/slaves/*/frameworks/*/executors/*/runs/*-*/applog/*.log
+      max_bytes: 1024
+output:
+  kafka:
+    hosts: "$KAFKA_COLLECTOR_HOSTS"
+    topic: "logforwarder"
+    client_id: "stratiopaascluster"
+    tls:
+
+shipper:
+
+logging:
+
+  level: debug
+
+  # enable file rotation with default configuration
+  to_files: true
+
+  # do not log to syslog
+  to_syslog: false
+
+  files:
+    path: /var/log/filebeat
+    name: filebeat.log
+    keepfiles: 7
+    rotateeverybytes: 10485760 # = 10MB
+
+

@@ -439,6 +439,9 @@ package:
   - path: /etc/kafka_collector_hosts
     content: |
       {{ kafka_collector_hosts }}
+  - path: /etc/root_ca_cert_path
+    content: |
+      {{ root_ca_cert_path }}
   - path: /etc/es_clustername
     content: |
       {{ cluster_name }}
