@@ -26,7 +26,7 @@ systemd_master="$PKG_PATH"/dcos.target.wants_master/filebeat.service
 mkdir -p "$(dirname "$systemd_master")"
 envsubst '$PKG_PATH' < /pkg/extra/filebeat.service > "$systemd_master"
 
-systemd_slave="$PKG_PATH"/dcos.target.wants_slave/filebeat.serviced
+systemd_slave="$PKG_PATH"/dcos.target.wants_slave/filebeat.service
 mkdir -p "$(dirname "$systemd_slave")"
 envsubst '$PKG_PATH' < /pkg/extra/filebeat.service > "$systemd_slave"
 
