@@ -14,7 +14,6 @@ import pkgpanda.exceptions
 from pkgpanda import PackageId
 from pkgpanda.build import hash_checkout
 
-
 AWS_REXRAY_CONFIG = """
 rexray:
   loglevel: info
@@ -189,7 +188,7 @@ def validate_dcos_overlay_network(dcos_overlay_network):
 def validate_dcos_remove_dockercfg_enable(dcos_remove_dockercfg_enable):
     can_be = ['true', 'false']
     assert dcos_remove_dockercfg_enable in can_be, (
-       'Must be one of {}. Got {}.'.format(can_be, dcos_remove_dockercfg_enable))
+        'Must be one of {}. Got {}.'.format(can_be, dcos_remove_dockercfg_enable))
 
 
 def calculate_oauth_available(oauth_enabled):
@@ -237,7 +236,8 @@ def validate_host_list(host_list):
     validate_duplicates(host_list)
     for host in host_list:
         assert isinstance(host, str), 'Host must be of type string, got {}'.format(type(host))
-        if host.startswith('[[[reference(') and host.endswith(').ipConfigurations[0].properties.privateIPAddress]]]'):  # noqa
+        if host.startswith('[[[reference(') and host.endswith(
+            ').ipConfigurations[0].properties.privateIPAddress]]]'):  # noqa
             azure_format_check.append(True)
         else:
             azure_format_check.append(False)
@@ -257,7 +257,7 @@ def validate_ipv4_addrs(ips):
         except OSError:
             invalid_ips.append(ip)
     assert not len(invalid_ips), 'Only IPv4 values are allowed. The following are invalid IPv4 addresses: {}'.format(
-                                 ', '.join(invalid_ips))
+        ', '.join(invalid_ips))
     return ips
 
 
@@ -314,6 +314,14 @@ def validate_cluster_packages(cluster_packages):
             raise AssertionError(str(ex)) from ex
 
 
+def calculate_spartan_resolvers(resolvers, master_list):
+    resolvers_list = json.loads(resolvers)
+    masters = json.loads(master_list)
+    for ip in masters:
+        resolvers_list.append(ip + ':' + '8600')
+    return str(resolvers_list)
+
+
 def validate_zk_hosts(exhibitor_zk_hosts):
     # TODO(malnick) Add validation of IPv4 address and port to this
     assert not exhibitor_zk_hosts.startswith('zk://'), "Must be of the form `host:port,host:port', not start with zk://"
@@ -326,7 +334,7 @@ def validate_zk_path(exhibitor_zk_path):
 def calculate_exhibitor_static_ensemble(master_list):
     masters = json.loads(master_list)
     masters.sort()
-    return ','.join(['%d:%s' % (i+1, m) for i, m in enumerate(masters)])
+    return ','.join(['%d:%s' % (i + 1, m) for i, m in enumerate(masters)])
 
 
 def calculate_adminrouter_auth_enabled(oauth_enabled):
@@ -345,7 +353,6 @@ def validate_os_type(os_type):
 
 
 __logrotate_slave_module_name = 'org_apache_mesos_LogrotateContainerLogger'
-
 
 entry = {
     'validate': [
@@ -367,7 +374,7 @@ entry = {
         validate_dcos_overlay_enable,
         validate_dcos_overlay_mtu,
         validate_dcos_remove_dockercfg_enable,
-	    validate_kafka_collector_hosts,
+        validate_kafka_collector_hosts,
         validate_root_ca_cert_path],
     'default': {
         'bootstrap_variant': calculate_bootstrap_variant,
@@ -386,6 +393,7 @@ entry = {
         'dns_search': '',
         'auth_cookie_secure_flag': 'false',
         'master_dns_bindall': 'true',
+        'spartan_resolvers': calculate_spartan_resolvers,
         'mesos_dns_ip_sources': '["host", "netinfo"]',
         'mesos_container_logger': __logrotate_slave_module_name,
         'oauth_issuer_url': 'https://dcos.auth0.com/',

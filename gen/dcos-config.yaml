@@ -30,34 +30,6 @@ package:
   - path: /etc_master/master_count
     content: |
       {{ num_masters }}
-  - path: /etc_slave/spartan.json
-    content: |
-      {
-        "upstream_resolvers": {{ resolvers }},
-        "bind_interface": "spartan",
-        "udp_port": 53,
-        "tcp_port": 53
-      }
-  - path: /etc_slave_public/spartan.json
-    content: |
-      {
-        "upstream_resolvers": {{ resolvers }},
-        "bind_interface": "spartan",
-        "udp_port": 53,
-        "tcp_port": 53
-      }
-  - path: /etc_master/spartan.json
-    content: |
-      {
-{% switch master_dns_bindall %}
-{% case "true" %}
-{% case "false" %}
-        "bind_interface": "spartan",
-{% endswitch %}
-        "upstream_resolvers": {{ resolvers }},
-        "udp_port": 53,
-        "tcp_port": 53
-      }
   - path: /etc/mesos-dns.env
     content: |
       MESOS_DNS_CONFIG=/opt/mesosphere/etc/mesos-dns.json
@@ -262,7 +234,7 @@ package:
       GLOG_drop_log_memory=false
 {% switch use_mesos_hooks %}
 {% case "true" %}
-      MESOS_HOOKS={{ mesos_hooks }} 
+      MESOS_HOOKS={{ mesos_hooks }}
 {% case "false" %}
 {% endswitch %}
   - path: /etc/mesos-slave
@@ -329,7 +301,63 @@ package:
       EXHIBITOR_URI=http://{{ exhibitor_address }}:8181/exhibitor/v1/cluster/status
       EXHIBITOR_ADDRESS={{ exhibitor_address }}
       RESOLVERS={{ resolvers_str }}
+  - path: /etc_slave/spartan.json
+    content: |
+      {
+        "upstream_resolvers": {{ resolvers }},
+        "bind_interface": "spartan",
+        "udp_port": 53,
+        "tcp_port": 53
+      }
+  - path: /etc_slave_public/spartan.json
+    content: |
+      {
+        "upstream_resolvers": {{ resolvers }},
+        "bind_interface": "spartan",
+        "udp_port": 53,
+        "tcp_port": 53
+      }
+  - path: /etc_master/spartan.json
+    content: |
+      {
+{% switch master_dns_bindall %}
+{% case "true" %}
+{% case "false" %}
+        "bind_interface": "spartan",
+{% endswitch %}
+        "upstream_resolvers": {{ resolvers }},
+        "udp_port": 53,
+        "tcp_port": 53
+      }
 {% case "static" %}
+  - path: /etc_slave/spartan.json
+    content: |
+      {
+        "upstream_resolvers": {{ spartan_resolvers }},
+        "bind_interface": "spartan",
+        "udp_port": 53,
+        "tcp_port": 53
+      }
+  - path: /etc_slave_public/spartan.json
+    content: |
+      {
+        "upstream_resolvers": {{ spartan_resolvers }},
+        "bind_interface": "spartan",
+        "udp_port": 53,
+        "tcp_port": 53
+      }
+  - path: /etc_master/spartan.json
+    content: |
+      {
+{% switch master_dns_bindall %}
+{% case "true" %}
+{% case "false" %}
+        "bind_interface": "spartan",
+{% endswitch %}
+        "upstream_resolvers": {{ spartan_resolvers }},
+        "udp_port": 53,
+        "tcp_port": 53
+      }
   - path: /etc_master/dns_config_master
     content: |
       MASTER_SOURCE=exhibitor_uri
@@ -357,6 +385,34 @@ package:
       MASTER_SOURCE=exhibitor
       EXHIBITOR_ADDRESS={{ keepalived_virtual_ipaddress }}
       RESOLVERS={{ resolvers_str }}
+  - path: /etc_slave/spartan.json
+    content: |
+      {
+        "upstream_resolvers": {{ resolvers }},
+        "bind_interface": "spartan",
+        "udp_port": 53,
+        "tcp_port": 53
+      }
+  - path: /etc_slave_public/spartan.json
+    content: |
+      {
+        "upstream_resolvers": {{ resolvers }},
+        "bind_interface": "spartan",
+        "udp_port": 53,
+        "tcp_port": 53
+      }
+  - path: /etc_master/spartan.json
+    content: |
+      {
+{% switch master_dns_bindall %}
+{% case "true" %}
+{% case "false" %}
+        "bind_interface": "spartan",
+{% endswitch %}
+        "upstream_resolvers": {{ resolvers }},
+        "udp_port": 53,
+        "tcp_port": 53
+      }
 {% endswitch %}
 {% switch exhibitor_storage_backend %}
 {% case "agent_only_group_no_exhibitor" %}

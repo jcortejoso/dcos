@@ -829,7 +829,7 @@
             "spartan": {
               "kind": "git",
               "git": "https://github.com/dcos/spartan.git",
-              "ref": "5be98261ad2bb39a2222f4f424cf2ff5b50bddbb",
+              "ref": "97ef5096d0e3371c20308c8df81e1261024b41b8",
               "ref_origin": "master"
             }
           }
