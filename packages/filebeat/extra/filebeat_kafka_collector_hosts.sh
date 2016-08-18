@@ -6,7 +6,7 @@ FILEBEAT_TEMPLATE="filebeat.yml.nossl.template"
 
 if [ -z $KAFKA_COLLECTOR_HOSTS ]
   then
-  KAFKA_COLLECTOR_HOSTS="leader.mesos:9092"
+  KAFKA_COLLECTOR_HOSTS="master.mesos:9092"
 fi
 
 if [ -n "$ROOT_CA_CERT_PATH" ]

@@ -4,7 +4,7 @@ KAFKA_COLLECTOR_HOSTS=`cat /opt/mesosphere/etc/kafka_collector_hosts`
 
 if [ -z $KAFKA_COLLECTOR_HOSTS ]
   then
-  KAFKA_COLLECTOR_HOSTS="leader.mesos:9092"
+  KAFKA_COLLECTOR_HOSTS="master.mesos:9092"
 fi
 
 export KAFKA_COLLECTOR_HOSTS
