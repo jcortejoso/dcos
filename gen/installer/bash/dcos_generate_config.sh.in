@@ -32,9 +32,9 @@ DCOS_INSTALLER_DAEMONIZE=${{DCOS_INSTALLER_DAEMONIZE:-false}}
 CONTAINER_NAME=$(uuidgen)
 
 if [ "$DCOS_INSTALLER_DAEMONIZE" == "true" ]; then
-    docker run --name=${CONTAINER_NAME} -d -p $PORT:9000 -v $(pwd)/genconf/:/genconf {docker_image_name} "$@"
+    docker run --name=$CONTAINER_NAME -d -p $PORT:9000 -v $(pwd)/genconf/:/genconf {docker_image_name} "$@"
 else
-    trap 'docker kill ${CONTAINER_NAME}' HUP QUIT INT TERM
-    docker run --rm=true --name=${CONTAINER_NAME} -i -p $PORT:9000 -v $(pwd)/genconf/:/genconf {docker_image_name} "$@"
+    trap 'docker kill $CONTAINER_NAME' HUP QUIT INT TERM
+    docker run --rm=true --name=$CONTAINER_NAME -i -p $PORT:9000 -v $(pwd)/genconf/:/genconf {docker_image_name} "$@"
 fi
 exit $?
