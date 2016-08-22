@@ -11,6 +11,7 @@ mv "$PKG_PATH/bin/telegraf" "$PKG_PATH/bin/telegraf-forwarder"
 chmod +x "$PKG_PATH/bin/telegraf-forwarder"
 
 cp "extra/telegraf-forwarder.conf.template" "$PKG_PATH/etc/telegraf-forwarder.conf.template"
+cp "extra/telegraf-forwarder.conf.ssl.template" "$PKG_PATH/etc/telegraf-forwarder.conf.ssl.template"
 
 export PKG_PATH=$PKG_PATH
 
