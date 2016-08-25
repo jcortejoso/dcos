@@ -293,7 +293,6 @@ package:
   - path: /etc/consul.env
     content: |
       CONSUL_BIND_IP=$(/opt/mesosphere/bin/detect_ip)
-      CONSUL_CONFIG=/opt/mesosphere/etc/consul.json
 {% switch master_discovery %}
 {% case "master_http_loadbalancer" %}
   - path: /etc_master/dns_config_master
