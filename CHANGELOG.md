@@ -2,6 +2,10 @@
 
 Only listing significant user-visible, not internal code cleanups and minor bug fixes. 
 
+## 0.3.0 (upcoming)
+
+* Pending changelog
+
 ## 0.2.0 (upcomming)
 * DCOS 1.8 integration
 

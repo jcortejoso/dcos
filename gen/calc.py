@@ -455,7 +455,7 @@ entry = {
         'config_yaml': calculate_config_yaml,
         'mesos_hooks': calculate_mesos_hooks,
         'use_mesos_hooks': calculate_use_mesos_hooks,
-        'stratiopaas_version': '0.2.0-SNAPSHOT'
+        'stratiopaas_version': '0.3.0-SNAPSHOT'
     },
     'conditional': {
         'master_discovery': {
