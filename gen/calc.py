@@ -59,6 +59,14 @@ def calculate_resolvers_str(resolvers):
     assert isinstance(resolvers, list)
     return ",".join(resolvers)
 
+def calculate_consul_dns_resolvers_str(resolvers):
+    assert isinstance(resolvers, str)
+    resolver_list = json.loads(resolvers)
+
+    if len(resolver_list) > 0:
+        return '"recursors": ' + resolvers
+    else:
+        return '"externalOn": false'
 
 def calculate_mesos_dns_resolvers_str(resolvers):
     assert isinstance(resolvers, str)
@@ -315,7 +323,8 @@ def validate_cluster_packages(cluster_packages):
 
 
 def calculate_spartan_resolvers(resolvers, master_list):
-    resolvers_list = json.loads(resolvers)
+    #resolvers_list = json.loads(resolvers)
+    resolvers_list = list()
     masters = json.loads(master_list)
     for ip in masters:
         resolvers_list.append(ip + ':' + '8600')
@@ -430,6 +439,7 @@ entry = {
         'resolvers_str': calculate_resolvers_str,
         'dcos_image_commit': calulate_dcos_image_commit,
         'mesos_dns_resolvers_str': calculate_mesos_dns_resolvers_str,
+        'consul_dns_resolver_str': calculate_consul_dns_resolvers_str,
         'dcos_version': '1.8',
         'dcos_gen_resolvconf_search_str': calculate_gen_resolvconf_search,
         'curly_pound': '{#',

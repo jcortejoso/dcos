@@ -43,6 +43,7 @@ consul_cmdline = [
     '-bind', detected_ip,
     '-client', detected_ip,
     '-data-dir', '/var/lib/dcos/consul',
+    '-config-file', '$CONSUL_CONFIG',
 ]
 
 # Make necessary consul runtime directories

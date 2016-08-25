@@ -41,11 +41,16 @@ package:
         "ttl": 60,
         "domain": "mesos",
         "port": 61053,
-        {{ mesos_dns_resolvers_str }},
+        "resolvers": [],
         "timeout": 5,
         "listener": "0.0.0.0",
         "email": "root.mesos-dns.mesos",
         "IPSources": {{ mesos_dns_ip_sources }}
+      }
+  - path: /etc/consul.json
+    content: |
+      {
+        {{ consul_dns_resolver_str }}
       }
   - path: /etc_master/minuteman.app.config
     content: |
@@ -288,6 +293,7 @@ package:
   - path: /etc/consul.env
     content: |
       CONSUL_BIND_IP=$(/opt/mesosphere/bin/detect_ip)
+      CONSUL_CONFIG=/opt/mesosphere/etc/consul.json
 {% switch master_discovery %}
 {% case "master_http_loadbalancer" %}
   - path: /etc_master/dns_config_master
