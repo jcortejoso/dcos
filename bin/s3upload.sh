@@ -25,3 +25,20 @@ curl -X PUT -T "${file}" \
   -H "${access}" \
   -H "Authorization: AWS ${s3Key}:${signature}" \
   https://s3-eu-west-1.amazonaws.com${resource}
+#Upload md5 file
+filenamemd5=dcos_generate_config.md5
+filemd5=/root/cd/dcos-artifacts/testing/first/${filenamemd5}
+resource_name=dcos-1.8-stratio0.2.1.md5
+
+md5=`md5sum ${file} | awk '{ print $1 }'`
+echo $md5 > $filemd5
+
+resource="/${bucket}/${resource_name}"
+stringToSign="PUT\n\n${contentType}\n${dateValue}\n${access}\n${resource}"
+signature=`echo -en ${stringToSign} | openssl sha1 -hmac ${s3Secret} -binary | base64`
+curl -X PUT -T "${filemd5}" \
+ -H "Date: ${dateValue}" \
+ -H "Content-Type: ${contentType}" \
+ -H "${access}" \
+ -H "Authorization: AWS ${s3Key}:${signature}" \
+ https://s3-eu-west-1.amazonaws.com${resource}

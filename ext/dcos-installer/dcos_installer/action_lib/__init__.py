@@ -263,9 +263,12 @@ until OUT=$(sudo /opt/mesosphere/bin/./3dt -diag) || [[ T -eq 0 ]]; do
     let T=T-1
 done
 RETCODE=$?
+backIFS=$IFS
+IFS=$'\\n'
 for value in $OUT; do
     echo $value
 done
+IFS=$backIFS
 exit $RETCODE"""
 
     postflight_chain.add_execute([dcos_diag], stage='Executing post-flight check')

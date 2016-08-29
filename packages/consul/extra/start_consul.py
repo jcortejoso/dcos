@@ -43,7 +43,7 @@ consul_cmdline = [
     '-bind', detected_ip,
     '-client', detected_ip,
     '-data-dir', '/var/lib/dcos/consul',
-    '-config-file', '/opt/mesosphere/etc/consul.json',
+    '-config-file', os.environ.get('CONSUL_CONFIG'),
 ]
 
 # Make necessary consul runtime directories
