@@ -1,6 +1,7 @@
 [Unit]
 Description=Grafana 
-
+# if external kafka collector is provided, disable collector stack (kafka,ingestion,telegraf-collector,influxdb,elasticsearch,grafana)
+ConditionFileNotEmpty=!/opt/mesosphere/etc/kafka_collector_hosts
 [Service]
 Restart=always
 StartLimitInterval=0
