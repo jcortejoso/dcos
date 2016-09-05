@@ -1,8 +1,0 @@
-{
-  "requires": ["openssl"],
-  "single_source" : {
-    "kind": "url_extract",
-    "url": "https://s3-eu-west-1.amazonaws.com/dcos-packages/vault.tar.gz",
-    "sha1": "6824e97467d093183722f2aadb07986035d0c5b3"
-  }
-}
