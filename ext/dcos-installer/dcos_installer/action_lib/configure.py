@@ -2,6 +2,8 @@ import logging
 import os
 import subprocess
 import sys
+import glob
+import shutil
 
 import gen
 import pkgpanda
@@ -11,18 +13,31 @@ from dcos_installer.util import SERVE_DIR
 log = logging.getLogger(__name__)
 
 
+def get_deactivate_list(gen_config):
+    deactivate_list = []
+
+    if 'kafka_collector_hosts' in gen_config.keys():
+        deactivate_list.append("kafka")
+        deactivate_list.append("ingestion-collector")
+        deactivate_list.append("telegraf-collector")
+        deactivate_list.append("elasticsearch")
+        deactivate_list.append("influxdb")
+        deactivate_list.append("grafana")
+    return deactivate_list
+
 def do_configure(gen_config):
     gen_config.update(get_gen_extra_args())
-
     subprocess.check_output(['mkdir', '-p', SERVE_DIR])
 
     do_validate_gen_config(gen_config)
 
     gen_out = gen.generate(arguments=gen_config)
     gen.installer.bash.generate(gen_out, SERVE_DIR)
-
+    
+    deactivate_list = get_deactivate_list(gen_config)
+    
     # Get bootstrap from artifacts
-    fetch_bootstrap(gen_out.arguments['bootstrap_id'])
+    fetch_bootstrap(gen_out.arguments['bootstrap_id'], deactivate_list)
     # Write some package metadata
     pkgpanda.write_json('/genconf/cluster_packages.json', gen_out.cluster_packages)
 
@@ -44,7 +59,7 @@ def do_validate_gen_config(gen_config):
     return gen.validate(arguments=gen_config)
 
 
-def fetch_bootstrap(bootstrap_id):
+def fetch_bootstrap(bootstrap_id, deactivate_list):
     copy_set = [
         "{}.bootstrap.tar.xz".format(bootstrap_id),
         "{}.active.json".format(bootstrap_id)]
@@ -72,6 +87,15 @@ def fetch_bootstrap(bootstrap_id):
                           filename, ex.strerror)
         sys.exit(1)
 
+    def delete_file_or_dir(path_file):
+        for fl in glob.glob(path_file):
+                if os.path.isfile(fl):
+                    os.remove(fl)
+                elif os.path.isdir(fl):
+                    shutil.rmtree(fl)
+                elif os.path.islink(fl):
+                    os.remove(fl)
+
     # Copy out the files, rolling back if it fails
     try:
         subprocess.check_output(['mkdir', '-p', '/genconf/serve/bootstrap/'])
@@ -79,6 +103,28 @@ def fetch_bootstrap(bootstrap_id):
         # Copy across
         for filename in copy_set:
             subprocess.check_output(['cp', container_cache_dir + filename, dest_dir + filename])
+        
+        if len(deactivate_list) > 0:
+            print("Filtering packages from bootstrap tarball, this will take a few minutes...")
+            file = dest_dir + "{}.active.json".format(bootstrap_id)
+            file_tar = dest_dir + "{}.bootstrap.tar.xz".format(bootstrap_id)
+            subprocess.check_output(['mkdir', '-p', dest_dir + '/temp'])
+            subprocess.check_output(['tar', '-xf', file_tar, '-C', dest_dir + '/temp'])
+            for service in deactivate_list:
+                regexpdelete = "/{}/d".format(service)
+                #Modify active.json
+                subprocess.check_output(['sed', '-i', '-e', regexpdelete, file])
+                #Modify tar.xz
+                delete_file_or_dir(dest_dir + "/temp/active/*" + service + "*")
+                subprocess.check_output(['sed', '-i', '-e', regexpdelete, dest_dir + '/temp/environment'])
+                subprocess.check_output(['sed', '-i', '-e', regexpdelete, dest_dir + '/temp/environment.export'])
+                delete_file_or_dir(dest_dir + "/temp/packages/*" + service + "*")
+            subprocess.check_output(['tar', '-czf', file_tar, '-C', dest_dir + '/temp', '.'])
+            subprocess.check_output(['rm', '-rf', dest_dir + '/temp'])
+            print("Filter completed")
+
+
+            
     except subprocess.CalledProcessError as ex:
         log.error("Copy failed: %s\nOutput:\n%s", ex.cmd, ex.output)
         log.error("Removing partial artifacts")
