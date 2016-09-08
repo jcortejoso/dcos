@@ -844,9 +844,7 @@
     },
     "telegraf-collector": {
         "requires": [
-            "telegraf-forwarder",
-            "kafka",
-            "influxdb"
+            "telegraf-forwarder"
         ],
         "single_source": {
             "kind": "url_extract",
@@ -856,9 +854,7 @@
         }
     },
     "telegraf-forwarder": {
-        "requires": [
-            "kafka"
-        ],
+        "requires": [],
         "single_source": {
             "kind": "url_extract",
             "old_url": "https://dl.influxdata.com/telegraf/releases/telegraf-0.13.1_linux_amd64.tar.gz",
