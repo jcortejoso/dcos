@@ -503,7 +503,7 @@ package:
       {{ kafka_collector_hosts }}
   - path: /etc/root_ca_cert_path
     content: |
-      {{ root_ca_cert_path }}
+      {{ root_ca_cert_path_calculated }}
   - path: /etc/es_clustername
     content: |
       {{ cluster_name }}

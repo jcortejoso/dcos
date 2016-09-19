@@ -51,8 +51,6 @@ exhibitor_cmdline = [
     '-jar', '$PKG_PATH/usr/exhibitor/exhibitor.jar',
     '--port', '8181',
     '--defaultconfig', '/run/dcos_exhibitor/exhibitor_defaults.conf',
-    '--security', '$PKG_PATH/stratiopaas-exhibitor-security.xml',
-    '--realm', 'stratiopaas:$PKG_PATH/stratiopaas-exhibitor-realm.properties',
     '--hostname', detected_ip
 ]
 

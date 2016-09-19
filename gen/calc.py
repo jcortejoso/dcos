@@ -135,8 +135,16 @@ def validate_kafka_collector_hosts(kafka_collector_hosts):
     return True
 
 
-def validate_root_ca_cert_path(rootCA_cert_path):
+def validate_root_ca_cert_path(root_ca_cert_path):
     return True
+
+
+def calculate_root_ca_cert_path(root_ca_cert_path):
+    if root_ca_cert_path == "":
+        return root_ca_cert_path
+    else:
+        rootCA_cert_name = os.path.basename(root_ca_cert_path)
+        return "/tmp/" + rootCA_cert_name
 
 
 def validate_oauth_enabled(oauth_enabled):
@@ -394,6 +402,7 @@ entry = {
         'telemetry_enabled': 'true',
         'kafka_collector_hosts': '',
         'root_ca_cert_path': '',
+        'root_ca_cert_path_calculated': calculate_root_ca_cert_path,
         'docker_remove_delay': '1hrs',
         'docker_stop_timeout': '20secs',
         'gc_delay': '2days',
